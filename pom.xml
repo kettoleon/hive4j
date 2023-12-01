@@ -10,7 +10,7 @@
 
     <groupId>com.github.kettoleon</groupId>
     <artifactId>hive4j-parent</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hive4j</name>
@@ -33,7 +33,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/kettoleon/hive4j.git</developerConnection>
-        <tag>hive4j-parent-0.0.3</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
