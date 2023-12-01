@@ -32,7 +32,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B release:prepare release:perform --file pom.xml
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
@@ -41,7 +41,7 @@ jobs:
         id: changelog
         uses: Requarks/changelog-action@v1
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.get-latest-tag.outputs.tag }}
 
       - name: Commit CHANGELOG.md
