@@ -31,7 +31,9 @@
     </properties>
 
     <scm>
+        <connection>scm:git:https://github.com/kettoleon/hive4j.git</connection>
         <developerConnection>scm:git:https://github.com/kettoleon/hive4j.git</developerConnection>
+        <url>https://github.com/kettoleon/hive4j.git</url>
         <tag>HEAD</tag>
     </scm>
 
