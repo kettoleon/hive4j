@@ -11,11 +11,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
     steps:
       - name: Clear workspace
         uses: chick-fil-a/gha-clear-workspace@v1
       - name: Checkout project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v3
@@ -39,13 +44,13 @@ jobs:
 
       - name: Update CHANGELOG.md
         id: changelog
-        uses: Requarks/changelog-action@v1
+        uses: Requarks/changelog-action@v1.9.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.get-latest-tag.outputs.tag }}
 
       - name: Commit CHANGELOG.md
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: master
           commit_message: 'docs: update CHANGELOG.md for ${{ steps.get-latest-tag.outputs.tag }} [skip ci]'
