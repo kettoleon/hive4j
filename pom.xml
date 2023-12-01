@@ -22,6 +22,7 @@
 		<module>api</module>
 		<module>clients/hive4j-clients-ollama</module>
 		<module>adapters</module>
+		<module>web</module>
 	</modules>
 
 	<properties>
@@ -34,6 +35,16 @@
 			<dependency>
 				<groupId>com.github.kettoleon</groupId>
 				<artifactId>hive4j-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.kettoleon</groupId>
+				<artifactId>hive4j-clients-ollama</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.kettoleon</groupId>
+				<artifactId>hive4j-adapters-llama2</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

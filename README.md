@@ -1,5 +1,9 @@
 # Hive4j
 
+<p align="center">
+  <img src="https://github.com/kettoleon/hive4j/blob/master/web/src/main/resources/static/logo128.png?raw=true" alt="Hive4j Logo"/>
+</p>
+
 Hive4j is both a java library to build and run your own LLM agents, and a spring boot web application to manage them.
 
 ## Status of the project
