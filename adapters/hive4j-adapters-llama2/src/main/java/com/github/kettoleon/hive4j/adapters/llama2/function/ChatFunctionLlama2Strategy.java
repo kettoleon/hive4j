@@ -33,7 +33,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
 
     private final SimulationTimeProvider simulationTimeProvider;
     private final CommonLlama2InstructionBuilder commonInstructions;
-    private final AgentMemoryRepository agentMemoryRepository;
+//    private final AgentMemoryRepository agentMemoryRepository;
 
 //    private final ReflectionFunction reflectionFunction;
 
@@ -64,7 +64,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
                 .build();
         getOrCreateMessages(chatName).add(joined);
 
-        commonInstructions.loadAgentContextIntoSystemInstruction(system, agentMemoryRepository.getMemoryStream(agent).getMemoriesByCreatedDesc(), joined);
+//        commonInstructions.loadAgentContextIntoSystemInstruction(system, agentMemoryRepository.getMemoryStream(agent).getMemoriesByCreatedDesc(), joined);
 
         StringBuilder sb = new StringBuilder();
 
@@ -124,7 +124,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
                 .build();
         getOrCreateMessages(chatName).add(instruction);
 
-        commonInstructions.loadAgentContextIntoSystemInstruction(systemMessages.get(chatName), agentMemoryRepository.getMemoryStream(to).getMemoriesByCreatedDesc(), getOrCreateMessages(chatName));
+//        commonInstructions.loadAgentContextIntoSystemInstruction(systemMessages.get(chatName), agentMemoryRepository.getMemoryStream(to).getMemoriesByCreatedDesc(), getOrCreateMessages(chatName));
 
         StringBuilder sb = new StringBuilder();
 
@@ -153,8 +153,8 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
                 .build();
         getOrCreateMessages(chatName).add(instruction);
 
-        MemoryStream memoryStream = agentMemoryRepository.getMemoryStream(agent);
-        commonInstructions.loadAgentContextIntoSystemInstruction(systemMessages.get(chatName), memoryStream.getMemoriesByCreatedDesc(), getOrCreateMessages(chatName));
+//        MemoryStream memoryStream = agentMemoryRepository.getMemoryStream(agent);
+//        commonInstructions.loadAgentContextIntoSystemInstruction(systemMessages.get(chatName), memoryStream.getMemoriesByCreatedDesc(), getOrCreateMessages(chatName));
 
 // TODO        reflectionFunction.reflect(agent);
 
@@ -164,9 +164,9 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
                 .doOnNext(sb::append)
                 .doFinally(signalType -> {
                     String responseString = sb.toString();
-                    if (isNotBlank(responseString)) {
-                        memoryStream.addMemory(MemoryType.OBSERVATION, responseString);
-                    }
+//                    if (isNotBlank(responseString)) {
+//                        memoryStream.addMemory(MemoryType.OBSERVATION, responseString);
+//                    }
                 });
     }
 

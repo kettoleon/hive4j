@@ -1,80 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-	<groupId>com.github.kettoleon</groupId>
-	<artifactId>hive4j-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <groupId>com.github.kettoleon</groupId>
+    <artifactId>hive4j-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<name>Hive4j</name>
-	<description>Hive4j is an application to build LLM agents deployed locally</description>
+    <name>Hive4j</name>
+    <description>Hive4j is an application to build LLM agents deployed locally</description>
 
-	<modules>
-		<module>clients</module>
-		<module>api</module>
-		<module>clients/hive4j-clients-ollama</module>
-		<module>adapters</module>
-		<module>web</module>
-	</modules>
+    <modules>
+        <module>clients</module>
+        <module>api</module>
+        <module>clients/hive4j-clients-ollama</module>
+        <module>adapters</module>
+        <module>web</module>
+    </modules>
 
-	<properties>
-		<java.version>21</java.version>
-		<deeplearning4j.version>1.0.0-M2.1</deeplearning4j.version>
-	</properties>
+    <properties>
+        <java.version>21</java.version>
+        <deeplearning4j.version>1.0.0-M2.1</deeplearning4j.version>
+    </properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.github.kettoleon</groupId>
-				<artifactId>hive4j-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.kettoleon</groupId>
-				<artifactId>hive4j-clients-ollama</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.kettoleon</groupId>
-				<artifactId>hive4j-adapters-llama2</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.deeplearning4j</groupId>
-				<artifactId>deeplearning4j-core</artifactId>
-				<version>${deeplearning4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.deeplearning4j</groupId>
-				<artifactId>deeplearning4j-nlp</artifactId>
-				<version>${deeplearning4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.nd4j</groupId>
-				<artifactId>nd4j-native-platform</artifactId>
-				<version>${deeplearning4j.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <scm>
+        <developerConnection>scm:git:https://github.com/kettoleon/hive4j.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-	</dependencies>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub</name>
+            <url>https://maven.pkg.github.com/kettoleon/hive4j</url>
+        </repository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.kettoleon</groupId>
+                <artifactId>hive4j-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kettoleon</groupId>
+                <artifactId>hive4j-clients-ollama</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kettoleon</groupId>
+                <artifactId>hive4j-adapters-llama2</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.deeplearning4j</groupId>
+                <artifactId>deeplearning4j-core</artifactId>
+                <version>${deeplearning4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.deeplearning4j</groupId>
+                <artifactId>deeplearning4j-nlp</artifactId>
+                <version>${deeplearning4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nd4j</groupId>
+                <artifactId>nd4j-native-platform</artifactId>
+                <version>${deeplearning4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

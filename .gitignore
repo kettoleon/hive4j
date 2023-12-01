@@ -1,5 +1,6 @@
 .idea
 **/target/
-
+localdev.properties
+logs
 
 
