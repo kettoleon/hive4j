@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kettoleon.hive4j.clients.ollama.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,18 +22,27 @@ import static org.springframework.http.HttpMethod.DELETE;
 @Slf4j
 public class OLlamaClient {
 
-    private static final String OLLAMA_URL = "http://localhost:11434";
-    private WebClient webClient = WebClient.builder()
-            .baseUrl(OLLAMA_URL)
-            .build();
+    @Value("${ollama.url:http://localhost:11434}")
+    private String ollamaUrl;
+
+    private WebClient webClient;
 
 
     public OLlamaClient() {
         //TODO parameterize ollama url and more
     }
 
+    private WebClient webClient() {
+        if (webClient == null) {
+            webClient = WebClient.builder()
+                    .baseUrl(ollamaUrl)
+                    .build();
+        }
+        return webClient;
+    }
+
     public List<OLlamaModel> getModelList() {
-        List<OLlamaModel> models = webClient.get()
+        List<OLlamaModel> models = webClient().get()
                 .uri("/api/tags")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -44,7 +54,7 @@ public class OLlamaClient {
 
     private List<OLlamaModel> fillAdditionalInfo(List<OLlamaModel> models) {
         for (OLlamaModel model : models) {
-            OLlamaModel details = webClient.post()
+            OLlamaModel details = webClient().post()
                     .uri("/api/show")
                     .bodyValue(new ModelRequest(model.getName()))
                     .retrieve()
@@ -74,7 +84,7 @@ public class OLlamaClient {
 
     public Flux<DownloadStatus> pullModel(String modelName) {
 
-        return toJsonObjectFlux(webClient.post()
+        return toJsonObjectFlux(webClient().post()
                 .uri("/api/pull")
                 .bodyValue(new ModelRequest(modelName))
                 .retrieve()
@@ -82,7 +92,7 @@ public class OLlamaClient {
     }
 
     public void deleteModel(String modelName) {
-        webClient.method(DELETE)
+        webClient().method(DELETE)
                 .uri("/api/delete")
                 .bodyValue(new ModelRequest(modelName))
                 .retrieve()
@@ -110,7 +120,7 @@ public class OLlamaClient {
     public Flux<String> generate(GenerateRequest generateRequest) {
         StringBuilder sb = new StringBuilder();
         AtomicReference<GenerateResponse> last = new AtomicReference<>();
-        return toJsonObjectFlux(webClient.post()
+        return toJsonObjectFlux(webClient().post()
                 .uri("/api/generate")
                 .bodyValue(generateRequest)
                 .retrieve()
@@ -141,7 +151,7 @@ public class OLlamaClient {
     }
 
     public double[] embeddings(String modelName, String prompt) {
-        return webClient.post()
+        return webClient().post()
                 .uri("/api/embeddings")
                 .bodyValue(new EmbeddingsRequest(modelName, prompt))
                 .retrieve()
