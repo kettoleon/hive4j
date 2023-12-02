@@ -1,0 +1,51 @@
+<div class="text-center row">
+    <h2 th:text="${pageTitle}">Page title</h2>
+</div>
+<div class="justify-content-center row row-cols-4 g-4 m-4">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#pull-model-modal"><i
+            class="bi bi-download"></i> Pull model
+    </button>
+</div>
+
+
+<div id="model-list" class="row row-cols-1 row-cols-md-2 g-4">
+    <th:block th:insert="~{models/model-cards}"></th:block>
+</div>
+
+<!-- Pull model modal -->
+<div class="modal" tabindex="-1" id="pull-model-modal">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pull model</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form" hx-post="/api/v1/models" hx-target="#model-list" hx-swap="beforeend" hx-on="htmx:beforeRequest: this.reset();">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="modelTag" class="form-label">Model Name:</label>
+                        <input type="text" class="form-control" id="modelTag" name="modelTag"
+                               aria-describedby="modelHelp">
+                        <div id="modelHelp" class="form-text">Copy the tag from an <a href="http://ollama.ai/library"
+                                                                                      target="_blank">Ollama
+                            library</a>'s
+                            model.
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Pull Model</button>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>

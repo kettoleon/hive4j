@@ -29,4 +29,20 @@ public class OLlamaModel {
     public String getParameterString() {
         return parameterString;
     }
+
+
+    public String getContextSize(){
+        if(parameters == null || parameters.get("num_ctx") == null){
+            return "N/A";
+        }
+        return parameters.get("num_ctx").get(0);
+    }
+
+    public String getFamily(){
+        return name.split(":")[0];
+    }
+
+    public String getTag(){
+        return name.split(":")[1];
+    }
 }

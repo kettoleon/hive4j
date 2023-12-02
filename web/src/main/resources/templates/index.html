@@ -3,14 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hive4j</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <title th:text="'Hive4j -' + ${pageTitle}">Hive4j</title>
     <link href="logo32.png" rel="icon" type="image/png">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-icons.css" rel="stylesheet">
     <style>
         @media print {
             .pagebreak { page-break-before: always; } /* page-break-after works, as well */
         }
     </style>
+
     <script src="/js/htmx.min.js"></script>
     <script src="/js/sse.js"></script>
     <script src="/js/ws.js"></script>
@@ -19,7 +22,7 @@
 <div class="container">
     <nav class="d-print-none navbar bg-body-tertiary navbar-expand-lg rounded">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Hive4j</a>
+            <img src="logo32.png"/> <a class="navbar-brand" href="/">Hive4j</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -28,13 +31,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Home</a>
+                        <a class="nav-link" href="/" th:classappend="${page.equals('home')}?active">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/models">Models</a>
+                        <a class="nav-link" href="/models" th:classappend="${page.equals('models/models')}?active">Models</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/agents">Agents</a>
+                        <a class="nav-link" href="/agents" th:classappend="${page.equals('agents/agents')}?active">Agents</a>
                     </li>
                     <!--                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">-->
                     <!--                        <a class="nav-link" th:classappend="${page.equals('users')}?active" href="users">Manage-->
@@ -62,10 +65,9 @@
     </nav>
 
     <div class="bg-body" style="padding-top:2em;padding-bottom:2em;">
-        <h2 class="text-center" th:text="${pageTitle}">Page title</h2>
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <th:block th:insert="${page}"></th:block>
+                <th:block th:insert="~{${page}}"></th:block>
             </div>
         </div>
     </div>
