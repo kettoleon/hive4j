@@ -17,18 +17,7 @@ public class DownloadStatus {
     private long total;
     private long completed;
 
-    public String getHumanReadableDownloadProgress() {
-        return String.format("%s of %s downloaded", byteCountToDisplaySize(completed), byteCountToDisplaySize(total));
-    }
-
-    public String getCompletedPercentage() {
-        if(total != 0) {
-            return String.format("%d", (completed * 100) / total);
-        }
-        return "0";
-    }
-
-    public boolean isPulling() {
+    public boolean isDownloading() {
         return status != null && status.startsWith("pulling");
     }
 

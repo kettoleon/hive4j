@@ -2,11 +2,10 @@ package com.github.kettoleon.hive4j.clients.ollama;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.kettoleon.hive4j.backend.ModelPullingStatus;
 import com.github.kettoleon.hive4j.clients.ollama.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
@@ -18,31 +17,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.HttpMethod.DELETE;
 
-@Component
 @Slf4j
 public class OLlamaClient {
 
-    @Value("${ollama.url:http://localhost:11434}")
-    private String ollamaUrl;
-
     private WebClient webClient;
 
-
-    public OLlamaClient() {
-        //TODO parameterize ollama url and more
-    }
-
-    private WebClient webClient() {
-        if (webClient == null) {
-            webClient = WebClient.builder()
-                    .baseUrl(ollamaUrl)
-                    .build();
-        }
-        return webClient;
+    public OLlamaClient(String ollamaUrl) {
+        webClient = WebClient.builder()
+                .baseUrl(ollamaUrl)
+                .build();
     }
 
     public List<OLlamaModel> getModelList() {
-        List<OLlamaModel> models = webClient().get()
+        List<OLlamaModel> models = webClient.get()
                 .uri("/api/tags")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -54,7 +41,7 @@ public class OLlamaClient {
 
     private List<OLlamaModel> fillAdditionalInfo(List<OLlamaModel> models) {
         for (OLlamaModel model : models) {
-            OLlamaModel details = webClient().post()
+            OLlamaModel details = webClient.post()
                     .uri("/api/show")
                     .bodyValue(new ModelRequest(model.getName()))
                     .retrieve()
@@ -84,7 +71,7 @@ public class OLlamaClient {
 
     public Flux<DownloadStatus> pullModel(String modelName) {
 
-        return toJsonObjectFlux(webClient().post()
+        return toJsonObjectFlux(webClient.post()
                 .uri("/api/pull")
                 .bodyValue(new ModelRequest(modelName))
                 .retrieve()
@@ -92,7 +79,7 @@ public class OLlamaClient {
     }
 
     public void deleteModel(String modelName) {
-        webClient().method(DELETE)
+        webClient.method(DELETE)
                 .uri("/api/delete")
                 .bodyValue(new ModelRequest(modelName))
                 .retrieve()
@@ -118,40 +105,19 @@ public class OLlamaClient {
     }
 
     public Flux<String> generate(GenerateRequest generateRequest) {
-        StringBuilder sb = new StringBuilder();
         AtomicReference<GenerateResponse> last = new AtomicReference<>();
-        return toJsonObjectFlux(webClient().post()
+        return toJsonObjectFlux(webClient.post()
                 .uri("/api/generate")
                 .bodyValue(generateRequest)
                 .retrieve()
-                .bodyToFlux(String.class)
-//                        .doOnNext((d) -> {
-//                            System.out.println("New result: "+d);
-//                        })
-                , GenerateResponse.class)
-                .doOnNext((d) -> {
-                    sb.append(d.getResponse());
-                })
+                .bodyToFlux(String.class), GenerateResponse.class)
                 .doOnNext(last::set)
-//                .doOnComplete(() -> {
-//                    GenerateResponse gr = last.get();
-//                    if (gr != null) {
-//                        log.info("Done generating: {} token/s\n=====\n{}\n=====\n", round(gr.getEvalCount() / (gr.getEvalDuration() / 1000.0)), sb.toString());
-//                    } else {
-//                        log.info("Done generating:\n{}", sb.toString());
-//
-//                    }
-//                })
                 .map(GenerateResponse::getResponse);
 
     }
 
-    private double round(double v) {
-        return Math.round(v * 100.0) / 100.0;
-    }
-
     public double[] embeddings(String modelName, String prompt) {
-        return webClient().post()
+        return webClient.post()
                 .uri("/api/embeddings")
                 .bodyValue(new EmbeddingsRequest(modelName, prompt))
                 .retrieve()
@@ -169,6 +135,5 @@ public class OLlamaClient {
                     }
                 });
     }
-
 
 }

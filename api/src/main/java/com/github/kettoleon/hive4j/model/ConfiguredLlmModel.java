@@ -13,6 +13,7 @@ public interface ConfiguredLlmModel {
     double[] embeddings(Instruction instruction);
 
     int countTokens(Instruction instruction);
+
     int countTokens(String text);
     Flux<String> instruct(Instruction... instruction);
 

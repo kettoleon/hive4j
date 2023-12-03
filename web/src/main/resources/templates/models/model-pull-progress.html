@@ -2,11 +2,11 @@
         class="bi bi-exclamation-triangle"></i> <span th:text="${status.getError()}"></span>
 </div>
 <div th:if="${!status.isError()}" th:id="'status-' + ${pullProgressId}">
-    Pull status: <span th:text="${status.status}">Status</span><br th:if="${status.isPulling()}"/>
-    <span th:if="${status.isPulling()}"
+    Pull status: <span th:text="${status.status}">Status</span><br th:if="${status.isDownloading()}"/>
+    <span th:if="${status.isDownloading()}"
           th:text="'(' + ${status.getHumanReadableDownloadProgress() + ')'}">Status</span>
 </div>
-<div th:if="${status.isPulling()}" th:id="'progress-' + ${pullProgressId}" class="progress" role="progressbar"
+<div th:if="${status.isDownloading()}" th:id="'progress-' + ${pullProgressId}" class="progress" role="progressbar"
      aria-label="Animated striped example"
      th:data-aria-valuenow="${status.getCompletedPercentage()}"
      aria-valuemin="0"
@@ -15,4 +15,4 @@
          th:style="'width: '+ ${status.getCompletedPercentage()} + '%'">
     </div>
 </div>
-<div th:if="${!status.isPulling()}" th:id="'progress-' + ${pullProgressId}"></div>
+<div th:if="${!status.isDownloading()}" th:id="'progress-' + ${pullProgressId}"></div>

@@ -31,11 +31,11 @@ public class OLlamaModel {
     }
 
 
-    public String getContextSize(){
+    public int getContextSize(){
         if(parameters == null || parameters.get("num_ctx") == null){
-            return "N/A";
+            return 0;
         }
-        return parameters.get("num_ctx").get(0);
+        return Integer.parseInt(parameters.get("num_ctx").get(0));
     }
 
     public String getFamily(){

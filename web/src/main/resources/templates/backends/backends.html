@@ -1,4 +1,44 @@
 <div class="text-center row">
     <h2 th:text="${pageTitle}">Page title</h2>
 </div>
-<p>//TODO ^.^"</p>
+<p>It would be nice to set them up here, but for now we can only configure them via environment properties and restart
+    the application.</p>
+<p>In order to add new backends, you will need to add properties to the environment:</p>
+<pre>
+# A human readable name for yourself
+hive4j.backends.&lt;backend-id&gt;.name=My backend deployed somewhere
+
+# This will make the app look for a &lt;type&gt;BackendFactory bean in the context.
+# Currently only "ollama" is supported.
+hive4j.backends.&lt;backend-id&gt;.type=ollama
+
+# Any properties that the client needs to connect to the backend
+hive4j.backends.&lt;backend-id&gt;.config.*
+</pre>
+<p>Remember you can add property files to the classpath by using the following command argument:</p>
+<pre>
+--spring.config.location=classpath:/application.properties,yourenvironment.properties
+</pre>
+<p>Here is an example of how to add an OLlama service:</p>
+<pre>
+hive4j.backends.ollama-local.name=OLlama Local
+hive4j.backends.ollama-local.type=ollama
+hive4j.backends.ollama-local.config.httpUrl=http://localhost:11434
+</pre>
+
+<p>Here is a list of the configured backends:</p>
+
+<div id="backend-list" class="row row-cols-1 row-cols-md-2 g-4">
+    <div th:each="backend: ${backends}">
+        <div th:id="'backend-card-' + ${backend.id}" class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${backend.name}"></h5>
+                    <p class="card-text">
+                        <span class="badge text-bg-secondary">id: <span th:text="${backend.id}"></span></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

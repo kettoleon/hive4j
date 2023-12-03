@@ -5,15 +5,11 @@ import com.github.kettoleon.hive4j.agent.AgentSystemPromptBuilder;
 import com.github.kettoleon.hive4j.agent.GenerativeAgent;
 import com.github.kettoleon.hive4j.agent.Perspective;
 import com.github.kettoleon.hive4j.function.ChatFunction;
-import com.github.kettoleon.hive4j.memory.AgentMemoryRepository;
-import com.github.kettoleon.hive4j.memory.MemoryStream;
-import com.github.kettoleon.hive4j.memory.MemoryType;
 import com.github.kettoleon.hive4j.model.ConfiguredLlmModel;
 import com.github.kettoleon.hive4j.model.Instruction;
 import com.github.kettoleon.hive4j.simulation.SimulationTimeProvider;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.time.ZonedDateTime;
@@ -26,7 +22,7 @@ import java.util.stream.Collectors;
 import static com.github.kettoleon.hive4j.adapters.llama2.misc.DateTimeFormats.MODEL_READABLE_FORMAT;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class ChatFunctionLlama2Strategy implements ChatFunction {
     private final ConfiguredLlmModel model;

@@ -1,7 +1,6 @@
-package com.github.kettoleon.hive4j.websocket;
+package com.github.kettoleon.hive4j.models;
 
-import com.github.kettoleon.hive4j.clients.ollama.OLlamaClient;
-import com.github.kettoleon.hive4j.clients.ollama.model.DownloadStatus;
+import com.github.kettoleon.hive4j.backend.ModelPullingStatus;
 import com.github.kettoleon.hive4j.model.Model;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,38 +24,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ModelPullHandler implements WebSocketHandler {
 
     @Autowired
-    private OLlamaClient oLlamaClient;
-
-    @Autowired
     private SpringTemplateEngine templateEngine;
 
     private Map<String, Model> pullingModels = new HashMap<>();
-    private Map<String, DownloadStatus> lastStatuses = new HashMap<>();
+    private Map<String, ModelPullingStatus> lastStatuses = new HashMap<>();
     private final Map<String, List<WebSocketSession>> pullingSessions = new ConcurrentHashMap<>();
 
-    public void pullModel(Model model) {
+    public void addModelPull(Model model, Flux<ModelPullingStatus> response) {
         pullingModels.put(model.getPullProgressId(), model);
-        oLlamaClient.pullModel(model.getRepositoryId())
-                .subscribe(ds -> {
-                    lastStatuses.put(model.getPullProgressId(), ds);
-                    broadcastRawMessage(model.getPullProgressId(), buildProgressHtml(model, ds));
-                    if (ds.isSuccess()) {
-                        log.info("Pulling finished for model: {}", model.getRepositoryId());
-                        closeAllSessions(model.getPullProgressId());
+        response.subscribe(ds -> {
+            lastStatuses.put(model.getPullProgressId(), ds);
+            broadcastRawMessage(model.getPullProgressId(), buildProgressHtml(model, ds));
+            if (ds.isSuccess()) {
+                log.info("Pulling finished for model: {}", model.getBackendId());
+                closeAllSessions(model.getPullProgressId());
+            }
+            if (ds.isError()) {
+                log.error("Error downloading model: {}, {}", model.getBackendId(), ds.getError());
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(10000L);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
-                    if (ds.isError()) {
-                        log.error("Error pulling model: {}, {}", model.getRepositoryId(), ds.getError());
-                        new Thread(() -> {
-                            try {
-                                Thread.sleep(10000L);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            closeAllSessions(model.getPullProgressId());
-                        }).start();
-
-                    }
-                });
+                    closeAllSessions(model.getPullProgressId());
+                }).start();
+            }
+        });
     }
 
     private void closeAllSessions(String pullProgressId) {
@@ -87,15 +82,11 @@ public class ModelPullHandler implements WebSocketHandler {
         }
     }
 
-    private String buildProgressHtml(Model model, DownloadStatus ds) {
+    private String buildProgressHtml(Model model, ModelPullingStatus ds) {
         Context context = new Context();
         context.setVariable("status", ds);
         context.setVariable("pullProgressId", model.getPullProgressId());
         return templateEngine.process("models/model-pull-progress", context);
-    }
-
-    public List<Model> getPullingModels() {
-        return new ArrayList<>(pullingModels.values());
     }
 
     @Override

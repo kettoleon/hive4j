@@ -1,11 +1,13 @@
 package com.github.kettoleon.hive4j.controller;
 
-import com.github.kettoleon.hive4j.models.ModelsRepository;
+import com.github.kettoleon.hive4j.backend.Backend;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 import static com.github.kettoleon.hive4j.configuration.GlobalTemplateVariables.page;
 
@@ -14,7 +16,7 @@ import static com.github.kettoleon.hive4j.configuration.GlobalTemplateVariables.
 public class WebController {
 
     @Autowired
-    private ModelsRepository modelsRepository;
+    private List<Backend> backends;
 
     @GetMapping(path = {"", "/", "/home"})
     public ModelAndView dashboard() {
@@ -28,7 +30,7 @@ public class WebController {
 
     @GetMapping(path = {"/backends"})
     public ModelAndView backends() {
-        return page("backends/backends", "Backends");
+        return page("backends/backends", "Backends").addObject("backends", backends);
     }
 
     @GetMapping(path = {"/workspaces"})

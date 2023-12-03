@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import static com.github.kettoleon.hive4j.adapters.llama2.misc.StringUtils.parseIntOrZero;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class MemoryRatingLlama2Strategy implements MemoryRatingFunction {
 

@@ -1,5 +1,6 @@
-package com.github.kettoleon.hive4j.clients.ollama;
+package com.github.kettoleon.hive4j.models.ollama;
 
+import com.github.kettoleon.hive4j.clients.ollama.OLlamaClient;
 import com.github.kettoleon.hive4j.clients.ollama.model.OLlamaModel;
 import com.github.kettoleon.hive4j.model.ConfiguredLlmModel;
 import com.github.kettoleon.hive4j.model.Instruction;
