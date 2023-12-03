@@ -28,14 +28,15 @@ $ ollama serve
 
 ## Roadmap
 
-* Pull, remove, manage LLM models available on the [OLlama](http://ollama.ai) platform.
-* Create your own LLM agents and chat with them.
-* Your agents will remember other conversations and will automatically create a minified version of the conversation to free up context space.
-* Your agents will be able to use tools to perform tasks.
-* Your agents will be able to learn from data you provide them.
-* Your agents will be able to look for information on the internet and keep themselves up to date.
-* Your agents will be able to interact with other agents and share information with them.
-* Your agents will be able to interact with other agents and coordinate to solve problems or perform tasks.
+* :hammer_and_wrench: Configure different backends, e.g. local ollama, and a remote exllama2.
+* :heavy_check_mark: Pull, remove, manage LLM models available on the [OLlama](http://ollama.ai) platform.
+* :writing_hand: Create your own LLM agents and chat with them.
+* :man_scientist: Your agents will remember other conversations and will automatically create a minified version of the conversation to free up context space.
+* :man_scientist: Your agents will be able to use tools to perform tasks.
+* :thinking: Your agents will be able to learn from data you provide them.
+* :thinking: Your agents will be able to look for information on the internet and keep themselves up to date.
+* :thinking: Your agents will be able to interact with other agents and share information with them.
+* :thinking: Your agents will be able to interact with other agents and coordinate to solve problems or perform tasks.
 
 ## Supported LLM backends
 

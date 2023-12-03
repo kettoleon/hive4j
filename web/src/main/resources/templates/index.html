@@ -34,10 +34,16 @@
                         <a class="nav-link" href="/" th:classappend="${page.equals('home')}?active">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/models" th:classappend="${page.equals('models/models')}?active">Models</a>
+                        <a class="nav-link" href="/workspaces" th:classappend="${page.equals('workspaces/workspaces')}?active">Workspaces</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/agents" th:classappend="${page.equals('agents/agents')}?active">Agents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/models" th:classappend="${page.equals('models/models')}?active">Models</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/backends" th:classappend="${page.equals('backends/backends')}?active">Backends</a>
                     </li>
                     <!--                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">-->
                     <!--                        <a class="nav-link" th:classappend="${page.equals('users')}?active" href="users">Manage-->
