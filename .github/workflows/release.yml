@@ -22,7 +22,8 @@ jobs:
         uses: chick-fil-a/gha-clear-workspace@v1
       - name: Checkout project
         uses: actions/checkout@v4
-
+      - run: |
+          sudo chmod -R ugo+rwX .
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
