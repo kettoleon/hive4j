@@ -16,7 +16,7 @@
                       hx-on="htmx:beforeRequest: this.reset();">
 
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                    <div class="mb-3">
+                    <div class="mb-3 col-9">
                         <div class="input-group">
                             <input type="text" name="modelTag" class="form-control" placeholder="Model Identifier"
                                    aria-label="Model Identifier" aria-describedby="button-pull">

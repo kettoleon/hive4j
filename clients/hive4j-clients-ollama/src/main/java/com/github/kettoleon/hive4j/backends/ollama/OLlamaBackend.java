@@ -38,6 +38,10 @@ public class OLlamaBackend implements MultiModelBackend {
 
     @Override
     public Model getModel(String backendModelId) {
+        return getAvailableModels().stream().filter(model -> model.getBackendId().equals(backendModelId)).findFirst().orElse(downloadingModel(backendModelId));
+    }
+
+    private Model downloadingModel(String backendModelId) {
         Model model = new Model();
         model.setBackend(this);
         model.setBackendId(backendModelId);

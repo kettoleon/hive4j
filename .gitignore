@@ -2,5 +2,7 @@
 **/target/
 localdev.properties
 logs
+work
+hive4j.db.mv.db
 
 
