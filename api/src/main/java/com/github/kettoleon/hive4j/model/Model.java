@@ -39,7 +39,7 @@ public class Model {
         return toSafeCssIdentifier(backend.getId() + "-" + backendId);
     }
 
-    private String toSafeCssIdentifier(String str) {
+    public static String toSafeCssIdentifier(String str) {
         return str.replaceAll("[^a-zA-Z0-9\\-_]", "_");
     }
 

@@ -23,6 +23,11 @@ public class WebController {
         return page("home", "Home");
     }
 
+    @GetMapping(path = {"/login"})
+    public ModelAndView login() {
+        return page("auth/login", "Login");
+    }
+
     @GetMapping(path = {"/agents"})
     public ModelAndView agents() {
         return page("agents/agents", "Agents");

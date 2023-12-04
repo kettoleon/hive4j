@@ -33,36 +33,33 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/" th:classappend="${page.equals('home')}?active">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${user != null}">
                         <a class="nav-link" href="/workspaces" th:classappend="${page.equals('workspaces/workspaces')}?active">Workspaces</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${user != null}">
                         <a class="nav-link" href="/agents" th:classappend="${page.equals('agents/agents')}?active">Agents</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${user != null}">
                         <a class="nav-link" href="/models" th:classappend="${page.equals('models/models')}?active">Models</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="nav-link" href="/backends" th:classappend="${page.equals('backends/backends')}?active">Backends</a>
                     </li>
-                    <!--                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">-->
-                    <!--                        <a class="nav-link" th:classappend="${page.equals('users')}?active" href="users">Manage-->
-                    <!--                            Users</a>-->
-                    <!--                    </li>-->
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="nav-link" th:classappend="${page.equals('users')}?active" href="users">Users</a>
+                    </li>
 
                 </ul>
                 <ul class="navbar-nav navbar-right">
                     <li class="nav-item">
-                        <a class="nav-link"
+                        <a class="nav-link" th:if="${user == null}" th:classappend="${page.equals('login')}?active"
                            href="login">Log In</a>
-                        <!--                        <a class="nav-link" th:if="${user == null}" th:classappend="${page.equals('login')}?active"-->
-                        <!--                           href="login">Log In</a>-->
-                        <!--                        <form th:if="${user != null}" action="logout" method="post">-->
-                        <!--                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
-                        <!--                            <button type="submit" class="nav-link btn btn-link"-->
-                        <!--                                    th:classappend="${page.equals('logout')}?active">Log out-->
-                        <!--                            </button>-->
-                        <!--                        </form>-->
+                        <form th:if="${user != null}" action="logout" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" class="nav-link btn btn-link"
+                                    th:classappend="${page.equals('logout')}?active">Log out
+                            </button>
+                        </form>
                     </li>
                 </ul>
 
@@ -90,7 +87,23 @@
         </div>
     </footer>
 </div>
-
+<div id="page-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

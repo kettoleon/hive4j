@@ -1,0 +1,22 @@
+<div class="row justify-content-center">
+    <div class="col-sm-5">
+        <form th:action="login" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">For logging in, and contacting you.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <!--    <p>Not registered yet? <a href="register">Create an account</a>.</p>-->
+        <!--    <p>Forgot your password? <a href="reset">Reset password</a>.</p>-->
+    </div>
+</div>

@@ -30,8 +30,8 @@ $ ollama serve
 
 * :heavy_check_mark: Configure different backends, e.g. local ollama, and a remote exllama2.
 * :heavy_check_mark: Pull, remove, manage LLM models available on the [OLlama](http://ollama.ai) platform.
+* :heavy_check_mark: Create/manage users and roles.
 * :hammer_and_wrench: Create/manage your own LLM agents.
-* :hammer_and_wrench: Create/manage users and roles.
 * :man_scientist: Be able to introspect your agents (have a chat with them, query their memories, ...).
 * :man_scientist: Your agents will remember other conversations and will automatically create a minified version of the conversation to free up context space.
 * :man_scientist: Your agents will be able to use tools to perform tasks.
