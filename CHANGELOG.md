@@ -1,4 +1,9 @@
 
+## [hive4j-parent-0.0.9] - 2023-12-04
+### :bug: Bug Fixes
+- [`4a673aa`](https://github.com/kettoleon/hive4j/commit/4a673aafb205373224cf6b274c7b43d76bcf60e6) - trying to fix the github action for release again *(commit by [@kettoleon](https://github.com/kettoleon))*
+
+
 ## [hive4j-parent-0.0.6] - 2023-12-03
 ### :sparkles: New Features
 - [`49b57eb`](https://github.com/kettoleon/hive4j/commit/49b57eb1da43665e79f944787f9ee494b9a1d279) - Adding configurable ollama.url property *(commit by [@kettoleon](https://github.com/kettoleon))*
@@ -13,3 +18,4 @@
 
 [hive4j-parent-0.0.5]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.4...hive4j-parent-0.0.5
 [hive4j-parent-0.0.6]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.5...hive4j-parent-0.0.6
+[hive4j-parent-0.0.9]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.8...hive4j-parent-0.0.9
