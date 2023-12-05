@@ -1,0 +1,8 @@
+<th:block th:if="${query.result != null}">
+    <li class="list-group-item" th:utext="${query.resultAsHtml}"></li>
+</th:block>
+<th:block th:if="${query.result == null}">
+    <li hx-ext="ws" th:data-ws-connect="'/api/v1/queries/' + ${query.id}" class="list-group-item">
+        <span th:id="'qr-' + ${query.id}">...</span>
+    </li>
+</th:block>

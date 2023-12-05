@@ -1,7 +1,10 @@
 package com.github.kettoleon.hive4j.agents.repo;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -9,6 +12,9 @@ import static com.github.kettoleon.hive4j.model.Model.toSafeCssIdentifier;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Hive4jSwarmAgent {
 
     @Id

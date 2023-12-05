@@ -2,6 +2,7 @@ package com.github.kettoleon.hive4j;
 
 import com.github.kettoleon.hive4j.agent.AgentSystemPromptBuilder;
 import com.github.kettoleon.hive4j.agent.impl.SwarmAgentSystemPromptBuilder;
+import com.github.kettoleon.hive4j.agents.QueriesWebSocketHandler;
 import com.github.kettoleon.hive4j.agents.repo.Query;
 import com.github.kettoleon.hive4j.agents.repo.QueryFunction;
 import com.github.kettoleon.hive4j.backend.Backend;
@@ -65,20 +66,11 @@ public class Hive4jApplication {
     }
 
     @Bean
-    public EmbeddedListenerThread<Query, Void> queryListener(EmbeddedQueue<Query, Void> queryQueue, QueryFunction queryFunction) {
+    public EmbeddedListenerThread<Query, Void> queryListener(EmbeddedQueue<Query, Void> queryQueue, QueryFunction queryFunction, QueriesWebSocketHandler queriesWebSocketHandler) {
         return new EmbeddedListenerThread<>(queryQueue, (query) -> {
             log.info("Received query: {}", query.message().getQuery());
-            StringBuilder sb = new StringBuilder();
 
-            queryFunction.execute(query.message())
-                    .doOnComplete(() -> {
-                        System.out.println();
-                        log.info("Received response: {}", sb.toString());
-                    })
-                    .subscribe(m -> {
-                        System.out.print(m);
-                        sb.append(m);
-                    });
+            queriesWebSocketHandler.addQuery(query.message(), queryFunction.execute(query.message()));
 
             return Mono.empty();
         });

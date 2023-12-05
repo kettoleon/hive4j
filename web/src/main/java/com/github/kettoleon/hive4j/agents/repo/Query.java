@@ -20,7 +20,12 @@ public class Query {
 
     private String query;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String result;
+
+    public String getResultAsHtml() {
+        return result.replaceAll("\n", "<br/>");
+    }
 
     private ZonedDateTime created;
 

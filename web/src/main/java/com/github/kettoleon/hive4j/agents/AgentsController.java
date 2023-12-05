@@ -46,7 +46,9 @@ public class AgentsController {
     public ModelAndView inspectAgent(@PathVariable("agentId") String agentId) {
         Hive4jSwarmAgent agent = agentsRepository.findById(agentId).orElseThrow();
         return page("agents/inspect/agent-inspect", agent.getName())
-                .addObject("agent", agent);
+                .addObject("agent", agent)
+                .addObject("queries", queryRepository.findByAgentOrderByCreatedDesc(agent))
+                ;
     }
 
 
