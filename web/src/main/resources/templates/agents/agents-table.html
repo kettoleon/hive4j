@@ -1,0 +1,13 @@
+<table class="table table-striped table-hover table-sm align-middle">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Specialty</th>
+        <th scope="col">Options</th>
+    </tr>
+    </thead>
+    <tbody id="agents-table-rows">
+    <th:block th:each="agent : ${agents}" th:include="~{agents/agents-table-row}"></th:block>
+    </tbody>
+</table>

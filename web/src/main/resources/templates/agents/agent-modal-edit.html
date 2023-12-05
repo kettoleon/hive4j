@@ -1,0 +1,70 @@
+<div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Edit agent</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form hx-post="/api/v1/agents"
+              th:attr="hx-target='#agents-table-row-' + ${agent.htmlId}"
+              hx-swap="outerHTML">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="inputId" class="form-label">Identifier</label>
+                    <input type="hidden" name="id" th:value="${agent.id}"/>
+                    <input name="id" type="text" class="form-control" id="inputId"
+                           aria-describedby="idHelp" th:value="${agent.id}" disabled>
+                    <div id="idHelp" class="form-text">Can't change an agent's identifier once it is set.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputName" class="form-label">Agent name</label>
+                    <input name="name" type="text" class="form-control" id="inputName" aria-describedby="nameHelp"
+                           th:value="${agent.name}">
+                    <div id="nameHelp" class="form-text">Give them a name and a surname.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="statementsTextArea" class="form-label">Statements <i>(You are..., It is...)</i></label>
+                    <textarea name="statements" class="form-control" id="statementsTextArea" rows="3"
+                              aria-describedby="statementsHelp"
+                              th:text="${agent.getStatementsInNewLines()}"
+                    ></textarea>
+                    <div id="statementsHelp" class="form-text">Place one statement in a new line. Statements will go
+                        into the system prompt. Do not write 'X is *statement*' or 'You are...', just write the
+                        statement.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputTraits" class="form-label">Traits</label>
+                    <input name="traits" type="text" class="form-control" id="inputTraits"
+                           aria-describedby="traitsHelp"
+                           th:value="${agent.getCommaSeparatedTraits()}">
+                    <div id="traitsHelp" class="form-text">Comma separated list of short traits.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputSpecialty" class="form-label">Specialty (Short job title)</label>
+                    <input name="specialty" type="text" class="form-control" id="inputSpecialty"
+                           aria-describedby="specialtyHelp" th:value="${agent.specialty}">
+                    <div id="specialtyHelp" class="form-text">Each swarm agent should specialise in something. This is
+                        like a short job title.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputMission" class="form-label">Mission</label>
+                    <input name="mission" type="text" class="form-control" id="inputMission"
+                           aria-describedby="missionHelp" th:value="${agent.mission}">
+                    <div id="missionHelp" class="form-text">Each swarm agent should have a mission.</div>
+                </div>
+                <div class="mb-3">
+                    <label for="inputFunction" class="form-label">Function</label>
+                    <input name="function" type="text" class="form-control" id="inputFunction"
+                           aria-describedby="functionHelp" th:value="${agent.function}">
+                    <div id="functionHelp" class="form-text">Each swarm agent should have a function.</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>

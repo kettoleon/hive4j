@@ -1,0 +1,22 @@
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Delete agent</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form hx-delete="/api/v1/agents"
+              th:attr="hx-target='#agents-table-row-' + ${agent.htmlId}"
+              hx-swap="outerHTML swap:1s">
+            <div class="modal-body">
+                <p>You are about to delete <span class="badge text-bg-secondary" th:text="${agent.id}"></span>. Are you
+                    sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="hidden" name="agentId" th:value="${agent.id}"/>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Delete!</button>
+            </div>
+        </form>
+    </div>
+</div>

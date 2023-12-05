@@ -1,4 +1,29 @@
 <div class="text-center row">
     <h2 th:text="${pageTitle}">Page title</h2>
 </div>
-<p>//TODO ^.^"</p>
+<div class="row justify-content-left">
+    <!--    TODO search when we start having a lot... -->
+    <!--    <div class="col-5">-->
+    <!--        <input class="form-control" type="search"-->
+    <!--               name="search" placeholder="Begin Typing To Search Agents..."-->
+    <!--               hx-get="/api/v1/agents"-->
+    <!--               hx-trigger="input changed delay:600ms, search"-->
+    <!--               hx-target="#agents-table"-->
+    <!--               hx-indicator=".htmx-indicator">-->
+    <!--    </div>-->
+    <div class="col-3">
+        <button hx-get="/api/v1/agents/new"
+                hx-target="#page-modal"
+                hx-swap="innerHTML"
+                class="btn btn-success"
+                type="submit"
+                data-bs-toggle="modal"
+                data-bs-target="#page-modal"
+        >
+            <i class="bi bi-robot"></i> New agent
+        </button>
+    </div>
+</div>
+<div id="agents-table" class="row m-4">
+    <th:block th:include="~{agents/agents-table}"></th:block>
+</div>

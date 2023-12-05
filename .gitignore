@@ -3,6 +3,6 @@
 localdev.properties
 logs
 work
-hive4j.db.mv.db
+hive4j.db.*.db
 
 

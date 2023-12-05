@@ -28,11 +28,6 @@ public class WebController {
         return page("auth/login", "Login");
     }
 
-    @GetMapping(path = {"/agents"})
-    public ModelAndView agents() {
-        return page("agents/agents", "Agents");
-    }
-
     @GetMapping(path = {"/backends"})
     public ModelAndView backends() {
         return page("backends/backends", "Backends").addObject("backends", backends);
