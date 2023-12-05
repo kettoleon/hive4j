@@ -7,7 +7,6 @@ import com.github.kettoleon.hive4j.model.Instruction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -27,8 +26,8 @@ public class CommonLlama2InstructionBuilder {
 
     public Instruction buildAgentBackgroundInstruction(GenerativeAgent agent) {
         Instruction background = Instruction.builder()
-                .instruction("Here is some background and context about a fictional character. For now, only understand and remember it. We will ask you follow-up questions later.")
-                .input(generateBackgroundInput(agent))
+                .prompt("Here is some background and context about a fictional character. For now, only understand and remember it. We will ask you follow-up questions later.")
+//                .input(generateBackgroundInput(agent))
                 .forcedResponseStart("Understood. I'm ready to answer questions taking this background and context into account.")
                 .build();
         return background;
@@ -90,8 +89,8 @@ public class CommonLlama2InstructionBuilder {
 
     private static Instruction getContextInstruction() {
         return Instruction.builder()
-                .instruction("Here are some of the agent's memories relevant for the task at hand. For now, only understand and remember them. We will ask you follow-up questions later.")
-                .input("#")
+                .prompt("Here are some of the agent's memories relevant for the task at hand. For now, only understand and remember them. We will ask you follow-up questions later.")
+//                .input("#")
                 .forcedResponseStart("Understood. I'm ready to answer questions taking these character memories into account.")
                 .build();
     }
@@ -101,7 +100,7 @@ public class CommonLlama2InstructionBuilder {
         int baseTokens = model.countTokens(contextInstruction);
         int tokensCountdown = remainingTokens - baseTokens;
 
-        contextInstruction.setInput(generateMemoriesInput(memories, tokensCountdown));
+//        contextInstruction.setInput(generateMemoriesInput(memories, tokensCountdown));
 
     }
 

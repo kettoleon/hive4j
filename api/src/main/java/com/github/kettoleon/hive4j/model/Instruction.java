@@ -8,8 +8,7 @@ import lombok.Data;
 public class Instruction {
 
     private String system;
-    private String instruction;
-    private String input;
+    private String prompt;
     private String response;
     private String forcedResponseStart;
     private boolean excludeResponseStart;
@@ -22,5 +21,15 @@ public class Instruction {
     //from performance on the long run.
     @Builder.Default
     private double intelligenceTradeoff = 1;
+
+    public String getResponseOrForcedResponseStart() {
+        if (response != null) {
+            return response;
+        }
+        if (forcedResponseStart != null) {
+            return forcedResponseStart;
+        }
+        return "";
+    }
 
 }

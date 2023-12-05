@@ -3,18 +3,25 @@ package com.github.kettoleon.hive4j.agents;
 import com.github.kettoleon.hive4j.agent.SwarmAgent;
 import com.github.kettoleon.hive4j.agents.repo.AgentsRepository;
 import com.github.kettoleon.hive4j.agents.repo.Hive4jSwarmAgent;
+import com.github.kettoleon.hive4j.agents.repo.Query;
+import com.github.kettoleon.hive4j.agents.repo.QueryRepository;
+import com.github.kettoleon.hive4j.queue.Message;
+import com.github.kettoleon.hive4j.queue.Publisher;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.github.kettoleon.hive4j.configuration.GlobalTemplateVariables.page;
+import static java.time.ZonedDateTime.now;
 
 @Controller
 @Slf4j
@@ -23,11 +30,25 @@ public class AgentsController {
     @Autowired
     private AgentsRepository agentsRepository;
 
+    @Autowired
+    private QueryRepository queryRepository;
+
+    @Autowired
+    private Publisher<Query, Void> queryPublisher;
+
     @GetMapping(path = {"/agents"})
     public ModelAndView agents() {
         return page("agents/agents", "Agents")
                 .addObject("agents", agentsRepository.findAll());
     }
+
+    @GetMapping(path = {"/agents/{agentId}"})
+    public ModelAndView inspectAgent(@PathVariable("agentId") String agentId) {
+        Hive4jSwarmAgent agent = agentsRepository.findById(agentId).orElseThrow();
+        return page("agents/inspect/agent-inspect", agent.getName())
+                .addObject("agent", agent);
+    }
+
 
     @GetMapping(path = {"/api/v1/agents"})
     public ModelAndView searchAgents(@RequestParam(value = "search", required = false) String search) {
@@ -60,7 +81,7 @@ public class AgentsController {
     @DeleteMapping(path = {"/api/v1/agents"})
     @ResponseBody
     public String deleteAgent(@RequestParam("agentId") String agentId) {
-        agentsRepository.findById(agentId).ifPresent(agentsRepository::delete);
+        agentsRepository.deleteById(agentId);
         return "";
     }
 
@@ -73,6 +94,31 @@ public class AgentsController {
 
         agentsRepository.save(mapToHive4jAgent(swarmAgent, newOrExistingAgent));
         return new ModelAndView("agents/agents-table-row").addObject("agent", newOrExistingAgent);
+    }
+
+    @PostMapping(path = {"/api/v1/agents/{agentId}/query"})
+    public ModelAndView queryAgent(@PathVariable("agentId") String agentId, @RequestParam("query") String query) {
+        Hive4jSwarmAgent agent = agentsRepository.findById(agentId).orElseThrow();
+        Query queryEntity = queryRepository.save(createNewQuery(agent, query));
+        queryPublisher.fireAndForget(new Message<>(queryEntity.getId(), UUID.randomUUID().toString(), queryEntity));
+        return new ModelAndView("agents/inspect/agent-query-card")
+                .addObject("query", queryEntity);
+    }
+
+    @DeleteMapping(path = {"/api/v1/query/{queryId}"})
+    @ResponseBody
+    public String queryAgent(@PathVariable("queryId") String queryId) {
+        queryRepository.deleteById(queryId);
+        return "";
+    }
+
+    private static Query createNewQuery(Hive4jSwarmAgent agent, String query) {
+        Query qe = new Query();
+        qe.setQuery(query);
+        qe.setAgent(agent);
+        qe.setCreated(now());
+        qe.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        return qe;
     }
 
     private Hive4jSwarmAgent mapToHive4jAgent(SwarmAgent swarmAgent, Hive4jSwarmAgent agent) {

@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.joining;
 
 @Slf4j
 public class OLlamaConfiguredModel implements ConfiguredLlmModel {
@@ -40,12 +39,12 @@ public class OLlamaConfiguredModel implements ConfiguredLlmModel {
 
     @Override
     public double[] embeddings(Instruction instruction) {
-        return embeddings(serializer.serialize(instruction));
+        return embeddings(serializer.serialize(List.of(instruction)));
     }
 
     @Override
     public int countTokens(Instruction instruction) {
-        return countTokens(serializer.serialize(instruction));
+        return countTokens(serializer.serialize(List.of(instruction)));
     }
 
     @Override
@@ -65,6 +64,6 @@ public class OLlamaConfiguredModel implements ConfiguredLlmModel {
 
     @Override
     public Flux<String> instruct(List<Instruction> instruction) {
-        return client.generate(model.getName(), instruction.stream().map(serializer::serialize).collect(joining("</s>\n")));
+        return client.generate(model.getName(), serializer.serialize(instruction));
     }
 }

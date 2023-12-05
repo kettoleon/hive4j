@@ -44,7 +44,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
             systemMessages.put(chatName, buildSystemMessage(time, (GenerativeAgent) from));
         }
         getOrCreateMessages(chatName).add(Instruction.builder()
-                .instruction(from.getName() + ": " + msg)
+                .prompt(from.getName() + ": " + msg)
                 .build());
     }
 
@@ -56,7 +56,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
         systemMessages.put(chatName, system);
 
         Instruction joined = Instruction.builder()
-                .instruction(agent.getName() + " just joined " + chatName + " with " + interlocutors.stream().map(Agent::getName).collect(Collectors.joining(", ")))
+                .prompt(agent.getName() + " just joined " + chatName + " with " + interlocutors.stream().map(Agent::getName).collect(Collectors.joining(", ")))
                 .build();
         getOrCreateMessages(chatName).add(joined);
 
@@ -88,7 +88,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
                                 """, time.format(MODEL_READABLE_FORMAT),
                         promptBuilder.buildSystemPrompt(agent, Perspective.SECOND_PERSON)
                 ))
-                .instruction("Here are part of your memories, use them as context.")
+                .prompt("Here are part of your memories, use them as context.")
                 .forcedResponseStart("Understood.")
                 .build();
         return system;
@@ -116,7 +116,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
     @Override
     public Flux<String> addMessage(String chatName, Agent from, GenerativeAgent to, String msg) {
         Instruction instruction = Instruction.builder()
-                .instruction(from.getName() + ": " + msg)
+                .prompt(from.getName() + ": " + msg)
                 .build();
         getOrCreateMessages(chatName).add(instruction);
 
@@ -144,7 +144,7 @@ public class ChatFunctionLlama2Strategy implements ChatFunction {
     @Override
     public Flux<String> close(String chatName, GenerativeAgent agent) {
         Instruction instruction = Instruction.builder()
-                .instruction("The conversation is being closed. Take a deep breath and provide a summary of what has been discussed, make sure to include agreements, decisions taken and relevant insights for you.")
+                .prompt("The conversation is being closed. Take a deep breath and provide a summary of what has been discussed, make sure to include agreements, decisions taken and relevant insights for you.")
                 .forcedResponseStart("Had a conversation with ")
                 .build();
         getOrCreateMessages(chatName).add(instruction);

@@ -1,0 +1,20 @@
+<div th:id="'query-' + ${query.id}" class="col col-12">
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" th:text="${query.query}"></li>
+            <li class="list-group-item">A: //TODO</li>
+            <li class="list-group-item">
+                <form
+                        th:attr="hx-delete='/api/v1/query/' + ${query.id}, hx-target='#query-' + ${query.id}"
+                        hx-swap="outerHTML swap:1s"
+                >
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <button class="btn btn-danger btn-sm" type="submit"><i class="bi bi-trash"></i></button>
+                </form>
+            </li>
+        </ul>
+        <!--        <div class="card-footer text-body-secondary text-center">-->
+        <!--            Asked by <span th:text="${query.createdBy}"></span> at <span th:text="${query.created}"></span>.-->
+        <!--        </div>-->
+    </div>
+</div>

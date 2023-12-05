@@ -7,7 +7,6 @@ import com.github.kettoleon.hive4j.function.MemoryRatingFunction;
 import com.github.kettoleon.hive4j.model.ConfiguredLlmModel;
 import com.github.kettoleon.hive4j.model.Instruction;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import static com.github.kettoleon.hive4j.adapters.llama2.misc.StringUtils.parseIntOrZero;
@@ -28,13 +27,13 @@ public class MemoryRatingLlama2Strategy implements MemoryRatingFunction {
 
         Instruction memoryEvaluation = Instruction.builder()
                 .system(agentSystemPromptBuilder.buildSystemPrompt(agent, Perspective.SECOND_PERSON))
-                .instruction("""
+                .prompt("""
                         On the scale of 1 to 10, where 1 is purely mundane (e.g., brushing teeth, making bed) and 10 is
                         extremely poignant (e.g., a break up, college acceptance), rate the likely poignancy of the
                         following piece of memory. You must answer with only a numeric value. Do not provide explanation
                         or description.
                         """)
-                .input("Memory: " + memory)
+//                .input("Memory: " + memory)
                 .build();
 
         String value = blockToString(model.instruct(memoryEvaluation));
@@ -43,7 +42,7 @@ public class MemoryRatingLlama2Strategy implements MemoryRatingFunction {
         if (poignancy == 0) {
             memoryEvaluation.setForcedResponseStart(value);
             Instruction insist = Instruction.builder()
-                    .instruction("Please, we insist, provide an answer with only a numeric value. We need to parse it for another system.")
+                    .prompt("Please, we insist, provide an answer with only a numeric value. We need to parse it for another system.")
                     .forcedResponseStart("Rating: ")
                     .build();
             value = blockToString(model.instruct(memoryEvaluation, insist));

@@ -4,13 +4,21 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="'Hive4j -' + ${pageTitle}">Hive4j</title>
-    <link href="logo32.png" rel="icon" type="image/png">
+    <link href="/logo32.png" rel="icon" type="image/png">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/bootstrap-icons.css" rel="stylesheet">
     <style>
         @media print {
             .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+        }
+        tr.htmx-swapping td {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+        div.htmx-swapping div {
+            opacity: 0;
+            transition: opacity 1s ease-out;
         }
     </style>
 
@@ -22,7 +30,7 @@
 <div class="container">
     <nav class="d-print-none navbar bg-body-tertiary navbar-expand-lg rounded">
         <div class="container-fluid">
-            <img src="logo32.png"/> <a class="navbar-brand" href="/">Hive4j</a>
+            <img src="/logo32.png"/> <a class="navbar-brand" href="/">Hive4j</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">

@@ -110,6 +110,7 @@ public class OLlamaBackend implements MultiModelBackend {
         model.setTag(oLlamaModel.getTag());
         model.setFileSize(oLlamaModel.getSize());
         model.setContextSize(oLlamaModel.getContextSize());
+        model.setInstructionSerializer(new OllamaInstructionSerializer(oLlamaModel));
         //TODO waiting for some sort of ollama library api
         return model;
     }
