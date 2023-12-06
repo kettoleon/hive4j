@@ -8,6 +8,8 @@
     </tr>
     </thead>
     <tbody id="agents-table-rows">
-    <th:block th:each="agent : ${agents}" th:include="~{agents/agents-table-row}"></th:block>
+    <div th:each="agent : ${agents}">
+        <div th:replace="~{agents/agents-table-row}"></div>
+    </div>
     </tbody>
 </table>

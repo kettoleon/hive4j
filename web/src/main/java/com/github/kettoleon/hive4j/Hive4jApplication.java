@@ -67,10 +67,7 @@ public class Hive4jApplication {
     @Bean
     public EmbeddedListenerThread<Query, Void> queryListener(EmbeddedQueue<Query, Void> queryQueue, QueryFunction queryFunction, QueriesWebSocketHandler queriesWebSocketHandler) {
         return new EmbeddedListenerThread<>(queryQueue, (query) -> {
-            log.info("Received query: {}", query.message().getQuery());
-
             queriesWebSocketHandler.addQuery(query.message(), queryFunction.execute(query.message()));
-
             return Mono.empty();
         });
     }

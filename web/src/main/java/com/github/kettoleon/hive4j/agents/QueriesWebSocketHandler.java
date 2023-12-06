@@ -71,6 +71,9 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
     }
 
     private String buildProgressHtml(Query query, String response) {
+        if (StringUtils.isBlank(response)) {
+            return String.format("<div id=\"qr-%s\" class=\"spinner-border spinner-border-sm\" role=\"status\"><span class=\"visually-hidden\">Loading...</span></div>", query.getId());
+        }
         return String.format("<span id=\"qr-%s\">%s</span>", query.getId(), response).replaceAll("\n", "<br/>");
     }
 

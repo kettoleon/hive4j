@@ -3,6 +3,10 @@
 </th:block>
 <th:block th:if="${query.result == null}">
     <li hx-ext="ws" th:data-ws-connect="'/api/v1/queries/' + ${query.id}" class="list-group-item">
-        <span th:id="'qr-' + ${query.id}">...</span>
+        <span th:id="'qr-' + ${query.id}">
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+        </span>
     </li>
 </th:block>

@@ -18,10 +18,14 @@ public class Query {
     @ManyToOne(fetch = FetchType.LAZY)
     private Hive4jSwarmAgent agent;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String query;
 
     @Column(columnDefinition = "LONGTEXT")
     private String result;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String htmlResult;
 
     public String getResultAsHtml() {
         return result.replaceAll("\n", "<br/>");
