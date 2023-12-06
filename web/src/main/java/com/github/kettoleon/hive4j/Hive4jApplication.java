@@ -1,6 +1,5 @@
 package com.github.kettoleon.hive4j;
 
-import com.github.kettoleon.hive4j.agent.AgentSystemPromptBuilder;
 import com.github.kettoleon.hive4j.agent.impl.SwarmAgentSystemPromptBuilder;
 import com.github.kettoleon.hive4j.agents.QueriesWebSocketHandler;
 import com.github.kettoleon.hive4j.agents.repo.Query;
@@ -40,7 +39,7 @@ public class Hive4jApplication {
     }
 
     @Bean
-    public AgentSystemPromptBuilder agentSystemPromptBuilder() {
+    public SwarmAgentSystemPromptBuilder agentSystemPromptBuilder() {
         return new SwarmAgentSystemPromptBuilder();
     }
 

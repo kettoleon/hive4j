@@ -1,5 +1,6 @@
 package com.github.kettoleon.hive4j.agents.repo;
 
+import com.github.kettoleon.hive4j.agent.SwarmAgent;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,4 +45,15 @@ public class Hive4jSwarmAgent {
         return String.join(", ", traits);
     }
 
+    public SwarmAgent asApiAgent() {
+        SwarmAgent agent = new SwarmAgent();
+        agent.setId(id);
+        agent.setName(name);
+        agent.setStatements(statements);
+        agent.setTraits(traits);
+        agent.setSpecialty(specialty);
+        agent.setMission(mission);
+        agent.setFunction(function);
+        return agent;
+    }
 }
