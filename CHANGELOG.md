@@ -1,4 +1,9 @@
 
+## [hive4j-parent-0.0.11] - 2023-12-06
+### :sparkles: New Features
+- [`8dc2503`](https://github.com/kettoleon/hive4j/commit/8dc2503caf8dae82996db2869319f3f43579580d) - Gave the QueryFunction the ability to set the system prompt of the agent when using the model. *(commit by [@kettoleon](https://github.com/kettoleon))*
+
+
 ## [hive4j-parent-0.0.9] - 2023-12-04
 ### :bug: Bug Fixes
 - [`4a673aa`](https://github.com/kettoleon/hive4j/commit/4a673aafb205373224cf6b274c7b43d76bcf60e6) - trying to fix the github action for release again *(commit by [@kettoleon](https://github.com/kettoleon))*
@@ -19,3 +24,4 @@
 [hive4j-parent-0.0.5]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.4...hive4j-parent-0.0.5
 [hive4j-parent-0.0.6]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.5...hive4j-parent-0.0.6
 [hive4j-parent-0.0.9]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.8...hive4j-parent-0.0.9
+[hive4j-parent-0.0.11]: https://github.com/kettoleon/hive4j/compare/hive4j-parent-0.0.10...hive4j-parent-0.0.11
