@@ -89,10 +89,10 @@
                 agent won't learn from it.
             </div>
         </form>
-        <div id="agent-queries" class="row g-4">
-            <div th:each="query : ${queries}">
+        <div id="agent-queries" class="row g-4 mt-1">
+            <th:block th:each="query : ${queries}">
                 <div th:replace="~{agents/inspect/agent-query-card}"></div>
-            </div>
+            </th:block>
         </div>
     </div>
     <div class="tab-pane fade border border-top-0 rounded-bottom" id="contact-tab-pane" role="tabpanel"
