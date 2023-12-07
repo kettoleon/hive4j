@@ -2,6 +2,7 @@ package com.github.kettoleon.hive4j.model;
 
 import lombok.Builder;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 @Data
 @Builder
@@ -30,6 +31,10 @@ public class Instruction {
             return forcedResponseStart;
         }
         return "";
+    }
+
+    public boolean shouldIncludeResponseStart() {
+        return StringUtils.isNotBlank(getForcedResponseStart()) && !isExcludeResponseStart();
     }
 
 }

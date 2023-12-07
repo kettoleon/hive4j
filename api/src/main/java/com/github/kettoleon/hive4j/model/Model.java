@@ -4,7 +4,6 @@ import com.github.kettoleon.hive4j.backend.Backend;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -63,8 +62,7 @@ public class Model {
 
     public Flux<String> generate(Instruction instruction) {
         return generate(instructionSerializer.serialize(List.of(instruction)))
-                .startWith((StringUtils.isNotBlank(instruction.getForcedResponseStart()) && !instruction.isExcludeResponseStart()) ? instruction.getForcedResponseStart() : "")
-                ;
+                .startWith(instruction.shouldIncludeResponseStart() ? instruction.getForcedResponseStart() : "");
     }
 
 

@@ -2,8 +2,8 @@ package com.github.kettoleon.hive4j.clients.ollama;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kettoleon.hive4j.backend.ModelPullingStatus;
 import com.github.kettoleon.hive4j.clients.ollama.model.*;
+import com.github.kettoleon.hive4j.queue.FIFOLock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,14 +13,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.HttpMethod.DELETE;
 
 @Slf4j
 public class OLlamaClient {
 
-    private WebClient webClient;
+    private final WebClient webClient;
+
+    private final FIFOLock generateLock = new FIFOLock();
 
     public OLlamaClient(String ollamaUrl) {
         webClient = WebClient.builder()
@@ -105,13 +106,13 @@ public class OLlamaClient {
     }
 
     public Flux<String> generate(GenerateRequest generateRequest) {
-        AtomicReference<GenerateResponse> last = new AtomicReference<>();
+        generateLock.await();
         return toJsonObjectFlux(webClient.post()
                 .uri("/api/generate")
                 .bodyValue(generateRequest)
                 .retrieve()
-                .bodyToFlux(String.class), GenerateResponse.class)
-                .doOnNext(last::set)
+                .bodyToFlux(String.class)
+                .doFinally(signalType -> generateLock.done()), GenerateResponse.class)
                 .map(GenerateResponse::getResponse);
 
     }
