@@ -2,6 +2,7 @@ package com.github.kettoleon.hive4j.agents;
 
 import com.github.kettoleon.hive4j.agents.repo.Query;
 import com.github.kettoleon.hive4j.agents.repo.QueryRepository;
+import com.github.kettoleon.hive4j.util.MarkdownUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,12 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
                 });
     }
 
+    private String getResponse(String queryId) {
+        return accumulatedResponses.get(queryId).toString();
+    }
+
     private void closeAllSessions(Query query) {
-        query.setResult(accumulatedResponses.get(query.getId()).toString());
+        query.setResult(getResponse(query.getId()));
         queriesRepository.save(query);
 
         accumulatedResponses.remove(query.getId());
@@ -53,6 +58,7 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
         });
         sessions.remove(query.getId());
     }
+
 
     private void broadcastRawMessage(String queryId, String html) {
         getOrCreateWebSockets(queryId).forEach(session -> sendRawMessage(session, html));
@@ -74,7 +80,7 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
         if (StringUtils.isBlank(response)) {
             return String.format("<div id=\"qr-%s\" class=\"spinner-border spinner-border-sm\" role=\"status\"><span class=\"visually-hidden\">Loading...</span></div>", query.getId());
         }
-        return String.format("<span id=\"qr-%s\">%s</span>", query.getId(), response).replaceAll("\n", "<br/>");
+        return String.format("<span id=\"qr-%s\">%s</span>", query.getId(), MarkdownUtils.markdownToHtml(response));
     }
 
     @Override

@@ -7,6 +7,8 @@ import lombok.Data;
 
 import java.time.ZonedDateTime;
 
+import static com.github.kettoleon.hive4j.util.MarkdownUtils.markdownToHtml;
+
 @Data
 @Entity
 public class Query {
@@ -24,11 +26,8 @@ public class Query {
     @Column(columnDefinition = "LONGTEXT")
     private String result;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String htmlResult;
-
     public String getResultAsHtml() {
-        return result.replaceAll("\n", "<br/>");
+        return markdownToHtml(result);
     }
 
     private ZonedDateTime created;
