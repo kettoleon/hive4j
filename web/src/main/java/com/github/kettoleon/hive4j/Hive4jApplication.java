@@ -46,17 +46,19 @@ public class Hive4jApplication {
     @Bean
     public List<Backend> backends(ConfiguredBackends configuredBackends, Map<String, BackendFactory> backendFactories) {
         ArrayList<Backend> backends = new ArrayList<>();
-        for (Map.Entry<String, BackendConfiguration> bc : configuredBackends.getBackends().entrySet()) {
-            BackendConfiguration backendConfig = bc.getValue();
-            BackendFactory backendFactory = backendFactories.get(backendConfig.getType() + BackendFactory.class.getSimpleName());
-            backends.add(backendFactory.createBackend(bc.getKey(), backendConfig.getName(), backendConfig.getConfig()));
+        if(configuredBackends != null && configuredBackends.getBackends() != null) {
+            for (Map.Entry<String, BackendConfiguration> bc : configuredBackends.getBackends().entrySet()) {
+                BackendConfiguration backendConfig = bc.getValue();
+                BackendFactory backendFactory = backendFactories.get(backendConfig.getType() + BackendFactory.class.getSimpleName());
+                backends.add(backendFactory.createBackend(bc.getKey(), backendConfig.getName(), backendConfig.getConfig()));
+            }
         }
         return backends;
     }
 
     @Bean
     public Model logicModel(List<Backend> backends) {
-        return backends.stream().flatMap(b -> b.getAvailableModels().stream()).filter(m -> m.getName().contains("orca2")).findFirst().orElseThrow();
+        return backends.stream().flatMap(b -> b.getAvailableModels().stream()).filter(m -> m.getName().contains("mistral")).findFirst().orElse(null);
     }
 
     @Bean

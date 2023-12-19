@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 @Component
 public class QueryFunction {
 
-    @Autowired
+    @Autowired(required = false)
     private Model logicModel;
 
     @Autowired
@@ -20,8 +20,11 @@ public class QueryFunction {
 
     public Flux<String> execute(Query query) {
 
-        //TODO obviously this will do more things, but that is a start.
+        if(logicModel == null) {
+            return Flux.just("Sorry, no logicModel bean available in the context.");
+        }
 
+        //TODO obviously this will do more things, but that is a start.
         return logicModel.generate(toInstruction(query));
 
     }
