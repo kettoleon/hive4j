@@ -29,7 +29,7 @@
         <h3>How to configure backends</h3>
         <p>In order to add new backends, you will need to add properties to the environment:</p>
         <pre>
-# A human readable name for yourself
+<code class="language-properties"># A human readable name for yourself
 hive4j.backends.&lt;backend-id&gt;.name=My backend deployed somewhere
 
 # This will make the app look for a &lt;type&gt;BackendFactory bean in the context.
@@ -37,15 +37,15 @@ hive4j.backends.&lt;backend-id&gt;.name=My backend deployed somewhere
 hive4j.backends.&lt;backend-id&gt;.type=ollama
 
 # Any properties that the client needs to connect to the backend
-hive4j.backends.&lt;backend-id&gt;.config.*
+hive4j.backends.&lt;backend-id&gt;.config.*</code>
         </pre>
         <p>Remember you can add property files to the classpath by using the following command argument:</p>
-        <pre>--spring.config.import=yourenvironment.properties</pre>
+        <pre><code>--spring.config.import=yourenvironment.properties</code></pre>
         <p>Here is an example of how to add an OLlama service:</p>
         <pre>
-hive4j.backends.ollama-local.name=OLlama Local
+<code class="language-properties">hive4j.backends.ollama-local.name=OLlama Local
 hive4j.backends.ollama-local.type=ollama
-hive4j.backends.ollama-local.config.httpUrl=http://localhost:11434
+hive4j.backends.ollama-local.config.httpUrl=http://localhost:11434</code>
         </pre>
     </div>
 </div>
