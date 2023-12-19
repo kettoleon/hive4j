@@ -10,7 +10,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Orca2InstructionSerializer implements InstructionSerializer {
 
-
     private static final String START_TK = "<|im_start|>";
     private static final String END_TK = "<|im_end|>\n";
     private static final String SYSTEM_TEMPLATE = START_TK + "system\n%s" + END_TK;

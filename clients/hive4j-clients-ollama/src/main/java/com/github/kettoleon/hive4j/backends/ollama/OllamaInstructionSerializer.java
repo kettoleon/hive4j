@@ -10,7 +10,10 @@ import java.util.Map;
 public class OllamaInstructionSerializer implements InstructionSerializer {
 
     private final Map<String, InstructionSerializer> serializers = Map.ofEntries(
-            Map.entry("orca2", new Orca2InstructionSerializer())
+            Map.entry("orca2", new Orca2InstructionSerializer()),
+            Map.entry("mistral", new LlamaInstructionSerializer()),
+            Map.entry("llama", new LlamaInstructionSerializer()),
+            Map.entry("llama2", new LlamaInstructionSerializer())
     );
     private final OLlamaModel model;
 
