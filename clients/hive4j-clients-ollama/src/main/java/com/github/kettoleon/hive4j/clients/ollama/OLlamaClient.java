@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.http.HttpMethod.DELETE;
 
@@ -117,12 +118,15 @@ public class OLlamaClient {
 
     public Flux<String> generate(GenerateRequest generateRequest) {
         generateLock.await();
+        AtomicReference<GenerateResponse> lastResponse = new AtomicReference<>();
         return toJsonObjectFlux(webClient.post()
                 .uri("/api/generate")
                 .bodyValue(generateRequest)
                 .retrieve()
                 .bodyToFlux(String.class)
                 .doFinally(signalType -> generateLock.done()), GenerateResponse.class)
+                .doOnNext(lastResponse::set)
+                .doOnComplete(() -> log.info("Generation completed with {}: {} tokens/s", generateRequest.getModel(), lastResponse.get().getHumanReadableTokensPerSecond()))
                 .map(GenerateResponse::getResponse);
 
     }

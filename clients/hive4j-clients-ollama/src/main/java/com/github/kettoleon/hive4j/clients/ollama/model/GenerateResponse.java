@@ -39,4 +39,16 @@ public class GenerateResponse {
 
     @JsonProperty("eval_duration")
     private long evalDuration;
+
+    public double getTokensPerSecond() {
+        return evalCount / getEvalDurationInSeconds();
+    }
+
+    public double getEvalDurationInSeconds() {
+        return evalDuration / 1000000000.0;
+    }
+
+    public String getHumanReadableTokensPerSecond() {
+        return String.format("%.2f", getTokensPerSecond());
+    }
 }
