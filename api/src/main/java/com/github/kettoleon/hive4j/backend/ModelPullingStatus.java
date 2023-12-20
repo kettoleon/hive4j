@@ -3,7 +3,7 @@ package com.github.kettoleon.hive4j.backend;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static org.apache.commons.io.FileUtils.byteCountToDisplaySize;
+import static com.github.kettoleon.hive4j.util.BytesFormatter.toHumanReadableDownloadBytes;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +18,7 @@ public class ModelPullingStatus {
     private boolean success;
 
     public String getHumanReadableDownloadProgress() {
-        return String.format("%s of %s downloaded", byteCountToDisplaySize(completed), byteCountToDisplaySize(total));
+        return String.format("%s of %s downloaded", toHumanReadableDownloadBytes(completed), toHumanReadableDownloadBytes(total));
     }
 
     public String getCompletedPercentage() {

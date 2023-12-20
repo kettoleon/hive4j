@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static org.apache.commons.io.FileUtils.byteCountToDisplaySize;
-
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
