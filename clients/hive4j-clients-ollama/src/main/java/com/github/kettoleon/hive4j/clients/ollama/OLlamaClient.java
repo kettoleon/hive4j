@@ -29,6 +29,16 @@ public class OLlamaClient {
                 .build();
     }
 
+    public String getVersion() {
+        return webClient.get()
+                .uri("/api/version")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(VersionResponse.class)
+                .block()
+                .getVersion();
+    }
+
     public List<OLlamaModel> getModelList() {
         List<OLlamaModel> models = webClient.get()
                 .uri("/api/tags")

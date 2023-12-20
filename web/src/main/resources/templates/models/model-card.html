@@ -6,11 +6,23 @@
             </h5>
             <th:block th:if="${!model.isPulling()}">
                 <p class="card-text">
-                    <span class="badge text-bg-secondary">File size: <span
-                            th:text="${model.humanReadableFileSize}">x GB</span></span>
-                    <span class="badge text-bg-secondary">Context size: <span
-                            th:text="${model.contextSize}">x</span> tokens</span>
+                    <span class="badge text-bg-primary">
+                        <span th:text="${model.parameters}">xB</span>
+                    </span>
+                    <span class="badge text-bg-info">
+                        <span th:text="${model.quantization}">x</span>
+                    </span>
+                    <span class="badge text-bg-warning">
+                        <span th:text="${model.humanReadableContextSize}">x</span> tokens
+                    </span>
+                    <span class="badge text-bg-secondary">
+                        <span th:text="${model.humanReadableFileSize}">x GB</span>
+                    </span>
+                    <span class="badge text-bg-secondary">
+                        <span th:text="${model.getFormat().toUpperCase()}">x</span>
+                    </span>
                 </p>
+
                 <th:block>
                     <p th:if="${!modelAliases.findAllByBackendIdAndBackendModelId(backend.id, model.backendId).isEmpty()}"
                        class="card-text">Aliases:

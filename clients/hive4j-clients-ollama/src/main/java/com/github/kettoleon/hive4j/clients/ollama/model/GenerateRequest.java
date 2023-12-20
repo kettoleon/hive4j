@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
 @Data
@@ -25,4 +27,7 @@ public class GenerateRequest {
     private String context;
     private boolean stream;
     private boolean raw;
+
+    //For multimodal models, base64 encoded png or jpg images (up to 100MB each)
+    private List<String> images;
 }

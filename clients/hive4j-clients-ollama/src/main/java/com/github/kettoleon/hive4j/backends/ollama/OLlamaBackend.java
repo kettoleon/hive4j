@@ -28,6 +28,11 @@ public class OLlamaBackend implements MultiModelBackend {
     }
 
     @Override
+    public String getVersion() {
+        return client.getVersion();
+    }
+
+    @Override
     public List<Model> getAvailableModels() {
         List<Model> installedModels = client.getModelList().stream().map(this::toAppModel).collect(toList());
         ArrayList<Model> models = new ArrayList<>();
@@ -111,6 +116,9 @@ public class OLlamaBackend implements MultiModelBackend {
         model.setFileSize(oLlamaModel.getSize());
         model.setContextSize(oLlamaModel.getContextSize());
         model.setInstructionSerializer(new OllamaInstructionSerializer(oLlamaModel));
+        model.setParameters(oLlamaModel.getDetails().getParameterSize());
+        model.setQuantization(oLlamaModel.getDetails().getQuantizationLevel());
+        model.setFormat(oLlamaModel.getDetails().getFormat());
         //TODO waiting for some sort of ollama library api
         return model;
     }

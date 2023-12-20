@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+
 @Component
 public class QueryFunction {
 
@@ -21,7 +23,7 @@ public class QueryFunction {
     public Flux<String> execute(Query query) {
 
         if(logicModel == null) {
-            return Flux.just("Sorry, no logicModel bean available in the context.");
+            return Flux.just("Sorry, no logicModel bean available in the context.").delayElements(Duration.ofMillis(1000));
         }
 
         //TODO obviously this will do more things, but that is a start.

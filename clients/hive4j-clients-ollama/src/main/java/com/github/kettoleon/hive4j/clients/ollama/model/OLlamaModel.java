@@ -25,6 +25,8 @@ public class OLlamaModel {
     private Map<String, List<String>> parameters;
     private String template;
 
+    private OLlamaModelDetails details;
+
     @JsonIgnore
     public String getParameterString() {
         return parameterString;

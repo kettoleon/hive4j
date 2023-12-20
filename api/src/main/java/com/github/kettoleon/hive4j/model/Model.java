@@ -3,10 +3,12 @@ package com.github.kettoleon.hive4j.model;
 import com.github.kettoleon.hive4j.backend.Backend;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.io.FileUtils;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+
+import static com.github.kettoleon.hive4j.util.BytesFormatter.toHumanReadableBytes;
+import static com.github.kettoleon.hive4j.util.BytesFormatter.toHumanReadableSuffix;
 
 @Data
 @NoArgsConstructor
@@ -25,15 +27,20 @@ public class Model {
 
     private LicenseType licenseType;
 
-    private int parametersInBillions;
+    private String parameters;
     private String quantization;
+    private String format;
 
     private String pullProgressId;
 
     private InstructionSerializer instructionSerializer;
 
     public String getHumanReadableFileSize() {
-        return FileUtils.byteCountToDisplaySize(fileSize);
+        return toHumanReadableBytes(fileSize);
+    }
+
+    public String getHumanReadableContextSize() {
+        return toHumanReadableSuffix(contextSize);
     }
 
     public boolean isPulling() {
@@ -64,6 +71,5 @@ public class Model {
         return generate(instructionSerializer.serialize(List.of(instruction)))
                 .startWith(instruction.shouldIncludeResponseStart() ? instruction.getForcedResponseStart() : "");
     }
-
 
 }

@@ -11,6 +11,8 @@ public interface Backend {
 
     String getName();
 
+    String getVersion();
+
     List<Model> getAvailableModels();
 
     Model getModel(String backendModelId);
