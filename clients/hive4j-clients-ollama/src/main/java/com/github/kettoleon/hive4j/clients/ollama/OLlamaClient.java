@@ -99,7 +99,7 @@ public class OLlamaClient {
                 .block();
     }
 
-    public Flux<String> generate(String modelName, String prompt, Profile... profiles) {
+    public Flux<GenerateResponse> generate(String modelName, String prompt, Profile... profiles) {
         GenerateRequest.GenerateRequestBuilder request = GenerateRequest.builder();
         request.model(modelName);
         request.prompt(prompt);
@@ -116,7 +116,7 @@ public class OLlamaClient {
         return generate(request.build());
     }
 
-    public Flux<String> generate(GenerateRequest generateRequest) {
+    public Flux<GenerateResponse> generate(GenerateRequest generateRequest) {
         generateLock.await();
         AtomicReference<GenerateResponse> lastResponse = new AtomicReference<>();
         return toJsonObjectFlux(webClient.post()
@@ -126,8 +126,8 @@ public class OLlamaClient {
                 .bodyToFlux(String.class)
                 .doFinally(signalType -> generateLock.done()), GenerateResponse.class)
                 .doOnNext(lastResponse::set)
-                .doOnComplete(() -> log.info("Generation completed with {}: {} tokens/s", generateRequest.getModel(), lastResponse.get().getHumanReadableTokensPerSecond()))
-                .map(GenerateResponse::getResponse);
+                .doOnComplete(() -> log.info("Generation completed with {}: {} tokens/s", generateRequest.getModel(), lastResponse.get().getHumanReadableTokensPerSecond()));
+
 
     }
 

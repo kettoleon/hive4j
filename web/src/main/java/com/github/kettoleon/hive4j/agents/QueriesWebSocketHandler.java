@@ -2,6 +2,7 @@ package com.github.kettoleon.hive4j.agents;
 
 import com.github.kettoleon.hive4j.agents.repo.Query;
 import com.github.kettoleon.hive4j.agents.repo.QueryRepository;
+import com.github.kettoleon.hive4j.model.GenerateProgress;
 import com.github.kettoleon.hive4j.util.MarkdownUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,29 +26,27 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
     private QueryRepository queriesRepository;
 
     private Map<String, Query> liveQueries = new HashMap<>();
-    private Map<String, StringBuilder> accumulatedResponses = new HashMap<>();
+    private Map<String, GenerateProgress> responses = new HashMap<>();
     private final Map<String, List<WebSocketSession>> sessions = new ConcurrentHashMap<>();
 
-    public void addQuery(Query query, Flux<String> response) {
+    public void addQuery(Query query, Flux<GenerateProgress> response) {
         liveQueries.put(query.getId(), query);
-        accumulatedResponses.put(query.getId(), new StringBuilder());
         response.doFinally(s -> closeAllSessions(query))
-                .subscribe(ds -> {
-                    StringBuilder sb = accumulatedResponses.get(query.getId());
-                    sb.append(ds);
-                    broadcastRawMessage(query.getId(), buildProgressHtml(query, sb.toString()));
+                .subscribe(gp -> {
+                    responses.put(query.getId(), gp);
+                    broadcastRawMessage(query.getId(), buildProgressHtml(query, gp));
                 });
     }
 
     private String getResponse(String queryId) {
-        return accumulatedResponses.get(queryId).toString();
+        return responses.get(queryId).getFullResponse();
     }
 
     private void closeAllSessions(Query query) {
         query.setResult(getResponse(query.getId()));
         queriesRepository.save(query);
 
-        accumulatedResponses.remove(query.getId());
+        responses.remove(query.getId());
         liveQueries.remove(query.getId());
         sessions.get(query.getId()).forEach(session -> {
             try {
@@ -76,11 +75,22 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    private String buildProgressHtml(Query query, String response) {
-        if (StringUtils.isBlank(response)) {
+    private String buildProgressHtml(Query query, GenerateProgress gp) {
+        if (StringUtils.isBlank(gp.getFullResponse())) {
             return String.format("<div id=\"qr-%s\" class=\"spinner-border spinner-border-sm\" role=\"status\"><span class=\"visually-hidden\">Loading...</span></div>", query.getId());
         }
-        return String.format("<span id=\"qr-%s\">%s</span>", query.getId(), MarkdownUtils.markdownToHtml(response));
+        if (gp.isDone()) {
+            return String.format("<span id=\"qr-%s\">%s</span><li id=\"query-status-%s\" class=\"list-group-item\">Generated %d tokens in %.2f seconds. (%s tokens/second)</li>",
+                    query.getId(),
+                    MarkdownUtils.markdownToHtml(gp.getFullResponse()),
+                    query.getId(),
+                    gp.getResponseTokens(),
+                    gp.getResponseSeconds(),
+                    gp.getHumanReadableTokensPerSecond()
+
+            );
+        }
+        return String.format("<span id=\"qr-%s\">%s</span>", query.getId(), MarkdownUtils.markdownToHtml(gp.getFullResponse()));
     }
 
     @Override
@@ -88,8 +98,8 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
         String queryId = getQueryId(session);
         getOrCreateWebSockets(queryId).add(session);
 
-        if (accumulatedResponses.containsKey(queryId)) {
-            sendRawMessage(session, buildProgressHtml(liveQueries.get(queryId), accumulatedResponses.get(queryId).toString()));
+        if (responses.containsKey(queryId)) {
+            sendRawMessage(session, buildProgressHtml(liveQueries.get(queryId), responses.get(queryId)));
         }
     }
 

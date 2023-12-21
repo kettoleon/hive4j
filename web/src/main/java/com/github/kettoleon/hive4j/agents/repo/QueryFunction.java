@@ -3,6 +3,7 @@ package com.github.kettoleon.hive4j.agents.repo;
 import com.github.kettoleon.hive4j.agent.Perspective;
 import com.github.kettoleon.hive4j.agent.SwarmAgent;
 import com.github.kettoleon.hive4j.agent.impl.SwarmAgentSystemPromptBuilder;
+import com.github.kettoleon.hive4j.model.GenerateProgress;
 import com.github.kettoleon.hive4j.model.Instruction;
 import com.github.kettoleon.hive4j.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ public class QueryFunction {
     @Autowired
     private SwarmAgentSystemPromptBuilder swarmAgentSystemPromptBuilder;
 
-    public Flux<String> execute(Query query) {
+    public Flux<GenerateProgress> execute(Query query) {
 
         if(logicModel == null) {
-            return Flux.just("Sorry, no logicModel bean available in the context.").delayElements(Duration.ofMillis(1000));
+            return Flux.just(GenerateProgress.builder().errorMessage("Sorry, no logicModel bean available in the context.").build()).delayElements(Duration.ofMillis(1000));
         }
 
         //TODO obviously this will do more things, but that is a start.

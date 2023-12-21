@@ -1,5 +1,6 @@
 package com.github.kettoleon.hive4j.backend;
 
+import com.github.kettoleon.hive4j.model.GenerateProgress;
 import com.github.kettoleon.hive4j.model.Model;
 import reactor.core.publisher.Flux;
 
@@ -21,7 +22,7 @@ public interface Backend {
 
     int countTokens(Model model, String text);
 
-    Flux<String> generate(Model model, String rawPrompt);
+    Flux<GenerateProgress> generate(Model model, String rawPrompt);
 
     //TODO getSupportedModels (from a library, registry)
 

@@ -4,10 +4,14 @@ import com.github.kettoleon.hive4j.backend.ModelPullingStatus;
 import com.github.kettoleon.hive4j.backend.MultiModelBackend;
 import com.github.kettoleon.hive4j.clients.ollama.OLlamaClient;
 import com.github.kettoleon.hive4j.clients.ollama.model.DownloadStatus;
+import com.github.kettoleon.hive4j.clients.ollama.model.GenerateResponse;
 import com.github.kettoleon.hive4j.clients.ollama.model.OLlamaModel;
+import com.github.kettoleon.hive4j.model.GenerateProgress;
+import com.github.kettoleon.hive4j.model.GenerateRequest;
 import com.github.kettoleon.hive4j.model.Model;
 import reactor.core.publisher.Flux;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +71,37 @@ public class OLlamaBackend implements MultiModelBackend {
     }
 
     @Override
-    public Flux<String> generate(Model model, String rawPrompt) {
-        return client.generate(model.getBackendId(), rawPrompt); //TODO profiles
+    public Flux<GenerateProgress> generate(Model model, String rawPrompt) { //TODO profiles
+        GenerateProgress generateProgress = createProgress(model, rawPrompt);
+        return client.generate(model.getBackendId(), rawPrompt)
+                .map(r -> {
+                    if (generateProgress.getStarted() == null) {
+                        generateProgress.setStarted(ZonedDateTime.now());
+                    }
+                    generateProgress.setDone(r.isDone());
+                    generateProgress.getFullResponseBuffer().append(r.getResponse());
+                    generateProgress.setPartResponse(r.getResponse());
+                    generateProgress.setResponseTokens(r.getEvalCount());
+                    generateProgress.setResponseMillis(r.getEvalDuration() / 1000000L);
+                    return generateProgress;
+                });
+    }
+
+    private GenerateProgress createProgress(Model model, String rawPrompt) {
+        return GenerateProgress.builder()
+                .modelUsed(model)
+                .request(new GenerateRequest(null, rawPrompt))
+                .created(ZonedDateTime.now())
+                .fullResponse(new StringBuffer())
+                .build();
+    }
+
+    private GenerateProgress toAppModel(GenerateResponse generateResponse, Model model, String rawPrompt, ZonedDateTime created) {
+        return GenerateProgress.builder()
+                .modelUsed(model)
+                .request(new GenerateRequest(null, rawPrompt))
+                .created(created)
+                .build();
     }
 
     @Override

@@ -3,6 +3,7 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item" th:text="${query.query}"></li>
             <div th:replace="~{agents/inspect/agent-query-response}"></div>
+            <li th:id="'query-status-'+ ${query.id}" class="list-group-item visually-hidden"></li>
             <li class="list-group-item">
                 <form
                         th:attr="hx-delete='/api/v1/query/' + ${query.id}, hx-target='#query-' + ${query.id}"

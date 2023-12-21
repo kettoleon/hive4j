@@ -1,6 +1,7 @@
 package com.github.kettoleon.hive4j.models.ollama;
 
 import com.github.kettoleon.hive4j.clients.ollama.OLlamaClient;
+import com.github.kettoleon.hive4j.clients.ollama.model.GenerateResponse;
 import com.github.kettoleon.hive4j.clients.ollama.model.OLlamaModel;
 import com.github.kettoleon.hive4j.model.ConfiguredLlmModel;
 import com.github.kettoleon.hive4j.model.Instruction;
@@ -64,6 +65,6 @@ public class OLlamaConfiguredModel implements ConfiguredLlmModel {
 
     @Override
     public Flux<String> instruct(List<Instruction> instruction) {
-        return client.generate(model.getName(), serializer.serialize(instruction));
+        return client.generate(model.getName(), serializer.serialize(instruction)).map(GenerateResponse::getResponse);
     }
 }

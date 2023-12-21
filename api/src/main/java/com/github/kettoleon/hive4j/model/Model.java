@@ -63,13 +63,21 @@ public class Model {
         return backend.countTokens(this, text);
     }
 
-    public Flux<String> generate(String rawPrompt) {
+    public Flux<GenerateProgress> generate(String rawPrompt) {
         return backend.generate(this, rawPrompt);
     }
 
-    public Flux<String> generate(Instruction instruction) {
-        return generate(instructionSerializer.serialize(List.of(instruction)))
-                .startWith(instruction.shouldIncludeResponseStart() ? instruction.getForcedResponseStart() : "");
+    public Flux<GenerateProgress> generate(Instruction instruction) {
+        if (instruction.shouldIncludeResponseStart()) {
+            return generate(instructionSerializer.serialize(List.of(instruction)))
+                    .map(r -> {
+                        if (!r.getFullResponse().startsWith(instruction.getForcedResponseStart())) {
+                            r.getFullResponseBuffer().insert(0, instruction.getForcedResponseStart());
+                        }
+                        return r;
+                    });
+        }
+        return generate(instructionSerializer.serialize(List.of(instruction)));
     }
 
 }
