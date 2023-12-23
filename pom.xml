@@ -32,6 +32,7 @@
         <jsoup.version>1.15.2</jsoup.version>
         <commonmark.version>0.21.0</commonmark.version>
         <copy_down.version>1.1</copy_down.version>
+        <jsch.version>0.1.55</jsch.version>
     </properties>
 
     <scm>
@@ -108,6 +109,11 @@
                 <groupId>io.github.furstenheim</groupId>
                 <artifactId>copy_down</artifactId>
                 <version>${copy_down.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${jsch.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

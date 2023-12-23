@@ -10,4 +10,16 @@
     <artifactId>hive4j-clients-parent</artifactId>
     <packaging>pom</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>hive4j-clients-ollama</module>
+        <module>hive4j-clients-ssh</module>
+    </modules>
+
 </project>

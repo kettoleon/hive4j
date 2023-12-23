@@ -43,8 +43,11 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
     }
 
     private void closeAllSessions(Query query) {
-        query.setResult(getResponse(query.getId()));
-        queriesRepository.save(query);
+        GenerateProgress gp = responses.get(query.getId());
+        if(!gp.isError()) {
+            query.setResult(getResponse(query.getId()));
+            queriesRepository.save(query);
+        }
 
         responses.remove(query.getId());
         liveQueries.remove(query.getId());
@@ -76,6 +79,9 @@ public class QueriesWebSocketHandler implements WebSocketHandler {
     }
 
     private String buildProgressHtml(Query query, GenerateProgress gp) {
+        if(gp.isError()){
+            return String.format("<div id=\"qr-%s\" class=\"alert alert-danger d-flex align-items-center\" role=\"alert\"><i role=\"img\" class=\"bi bi-exclamation-circle-fill flex-shrink-0 me-2\"></i><div>%s</div></div>", query.getId(), gp.getErrorMessage());
+        }
         if (StringUtils.isBlank(gp.getFullResponse())) {
             return String.format("<div id=\"qr-%s\" class=\"spinner-border spinner-border-sm\" role=\"status\"><span class=\"visually-hidden\">Loading...</span></div>", query.getId());
         }
