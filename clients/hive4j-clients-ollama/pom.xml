@@ -16,6 +16,11 @@
             <artifactId>hive4j-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.kettoleon</groupId>
+            <artifactId>hive4j-clients-ssh</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>

@@ -15,6 +15,7 @@ public class SshPortForwarding implements Runnable {
     private final String rhost;
     private final int rport;
     private HardcodedUserInfo userInfo;
+    private Session session;
 
     public SshPortForwarding(JSch jsch, String user, String password, String host, int lport, String rhost, int rport) {
         this.jsch = jsch;
@@ -28,7 +29,6 @@ public class SshPortForwarding implements Runnable {
 
     public void run() {
         while (true) {
-            Session session = null;
             try {
                 session = jsch.getSession(user, host, 22);
                 session.setUserInfo(userInfo);
@@ -60,6 +60,10 @@ public class SshPortForwarding implements Runnable {
             }
             log.info("Connection to {}@{} lost. Reconnecting...", user, host);
         }
+    }
+
+    public boolean isConnected(){
+        return session != null && session.isConnected();
     }
 
     public static class HardcodedUserInfo implements UserInfo {
