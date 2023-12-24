@@ -25,7 +25,7 @@
     </modules>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
         <deeplearning4j.version>1.0.0-M2.1</deeplearning4j.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <arguments>-Dmaven.javadoc.skip=true</arguments>

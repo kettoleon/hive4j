@@ -58,7 +58,7 @@ public class Hive4jApplication {
 
     @Bean
     public Model logicModel(List<Backend> backends) {
-        return backends.stream().flatMap(b -> b.getAvailableModels().stream()).filter(m -> m.getName().contains("mistral")).findFirst().orElse(null);
+        return backends.stream().flatMap(b -> b.getAvailableModels().stream()).filter(m -> m.getName().contains("orca2")).findFirst().orElse(null);
     }
 
     @Bean
