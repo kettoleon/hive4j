@@ -19,7 +19,6 @@
     <modules>
         <module>clients</module>
         <module>api</module>
-        <module>clients/hive4j-clients-ollama</module>
         <module>adapters</module>
         <module>web</module>
     </modules>
