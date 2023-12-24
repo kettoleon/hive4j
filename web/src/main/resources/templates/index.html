@@ -24,10 +24,11 @@
         }
     </style>
 
+    <script src="/js/bootstrap.colormode.js"></script>
     <script src="/js/htmx.min.js"></script>
     <script src="/js/sse.js"></script>
     <script src="/js/ws.js"></script>
-    <script src="/js/highlight.min.js"></script>
+    <script src="/js/highlight/highlight.min.js"></script>
     <script src="/js/highlight/lang/properties.min.js"></script>
 </head>
 <body>
@@ -73,6 +74,32 @@
                             </button>
                         </form>
                     </li>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (light)">
+                            <i class="bi my-1 theme-icon-active bi-sun-fill"></i>
+                            <span class="d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="light" aria-pressed="true">
+                                    <i class="bi me-2 opacity-50 theme-icon bi-sun-fill"></i>
+                                    Light
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                                    <i class="bi me-2 opacity-50 theme-icon bi-moon-stars-fill"></i>
+                                    Dark
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
+                                    <i class="bi me-2 opacity-50 theme-icon bi-circle-half"></i>
+                                    Auto
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
 
             </div>
@@ -87,14 +114,14 @@
         </div>
     </div>
     <footer class="d-print-none bg-light text-center text-lg-start">
-        <div class="text-center p-3 bg-body-tertiary rounded text-light row">
+        <div class="text-center p-3 bg-body-tertiary rounded row">
             <div class="col-4 text-secondary" th:if="${version}"><a class="text-secondary"
                                                                     href="https://github.com/kettoleon/hive4j">Hive4j</a>
                 v<a class="text-secondary" href="https://github.com/kettoleon/hive4j/blob/master/CHANGELOG.md"
                     th:text="${version}"></a></div>
             <div class="col-4">
                 Made with &#10084; by
-                <a class="text-light" href="https://github.com/kettoleon">kettoleon</a>.
+                <a href="https://github.com/kettoleon">kettoleon</a>.
             </div>
         </div>
     </footer>
