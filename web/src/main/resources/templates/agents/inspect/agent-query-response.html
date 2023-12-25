@@ -2,7 +2,10 @@
     <li class="list-group-item" th:utext="${query.resultAsHtml}"></li>
 </th:block>
 <th:block th:if="${query.result == null}">
-    <li hx-ext="ws" th:data-ws-connect="'/api/v1/queries/' + ${query.id}" class="list-group-item">
+    <li hx-ext="ws"
+        th:data-ws-connect="'/api/v1/queries/' + ${query.id}"
+        hx-on="htmx:wsAfterMessage: this.querySelectorAll('pre code').forEach((el) => {hljs.highlightElement(el);});"
+        class="list-group-item">
         <span th:id="'qr-' + ${query.id}">
             <div class="spinner-border spinner-border-sm" role="status">
               <span class="visually-hidden">Loading...</span>
