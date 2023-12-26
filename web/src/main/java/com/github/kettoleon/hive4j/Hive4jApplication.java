@@ -3,7 +3,7 @@ package com.github.kettoleon.hive4j;
 import com.github.kettoleon.hive4j.agent.impl.SwarmAgentSystemPromptBuilder;
 import com.github.kettoleon.hive4j.agents.QueriesWebSocketHandler;
 import com.github.kettoleon.hive4j.agents.repo.Query;
-import com.github.kettoleon.hive4j.agents.repo.QueryFunction;
+import com.github.kettoleon.hive4j.functions.experimental.QueryFunction;
 import com.github.kettoleon.hive4j.backend.Backend;
 import com.github.kettoleon.hive4j.backend.BackendFactory;
 import com.github.kettoleon.hive4j.backends.BackendConfiguration;
@@ -58,7 +58,23 @@ public class Hive4jApplication {
 
     @Bean
     public Model logicModel(List<Backend> backends) {
-        return backends.stream().flatMap(b -> b.getAvailableModels().stream()).filter(m -> m.getName().contains("orca2")).findFirst().orElse(null);
+        blockUntilBackendsReady(backends);
+        return backends.stream().flatMap(b -> b.getAvailableModels().stream()).filter(m -> m.getName().contains("mistral")).findFirst().orElse(null);
+    }
+
+    private static void blockUntilBackendsReady(List<Backend> backends) {
+        String version = null;
+        while(version == null){
+            try{
+                version = backends.getFirst().getVersion();
+            }catch(Exception e){
+                try {
+                    Thread.sleep(200l);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 
     @Bean

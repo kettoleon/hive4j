@@ -1,8 +1,9 @@
-package com.github.kettoleon.hive4j.agents.repo;
+package com.github.kettoleon.hive4j.functions.experimental;
 
 import com.github.kettoleon.hive4j.agent.Perspective;
 import com.github.kettoleon.hive4j.agent.SwarmAgent;
 import com.github.kettoleon.hive4j.agent.impl.SwarmAgentSystemPromptBuilder;
+import com.github.kettoleon.hive4j.agents.repo.Query;
 import com.github.kettoleon.hive4j.model.GenerateProgress;
 import com.github.kettoleon.hive4j.model.Instruction;
 import com.github.kettoleon.hive4j.model.Model;
@@ -19,6 +20,9 @@ public class QueryFunction {
     private Model logicModel;
 
     @Autowired
+    private PromptEnhancerFunction promptEnhancerFunction;
+
+    @Autowired
     private SwarmAgentSystemPromptBuilder swarmAgentSystemPromptBuilder;
 
     public Flux<GenerateProgress> execute(Query query) {
@@ -26,6 +30,9 @@ public class QueryFunction {
         if(logicModel == null) {
             return Flux.just(GenerateProgress.builder().errorMessage("Sorry, no logicModel bean available in the context.").build()).delayElements(Duration.ofMillis(1000));
         }
+
+        String enhancedPrompt = promptEnhancerFunction.enhance(query.getQuery());
+        query.setQuery(enhancedPrompt);
 
         //TODO obviously this will do more things, but that is a start.
         return logicModel.generate(toInstruction(query));
