@@ -32,6 +32,7 @@
         <commonmark.version>0.21.0</commonmark.version>
         <copy_down.version>1.1</copy_down.version>
         <jsch.version>0.1.55</jsch.version>
+        <htmlunit.version>2.51.0</htmlunit.version>
     </properties>
 
     <scm>
@@ -83,6 +84,11 @@
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.htmlunit</groupId>
+                <artifactId>htmlunit</artifactId>
+                <version>${htmlunit.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.commonmark</groupId>

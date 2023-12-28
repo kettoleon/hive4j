@@ -3,11 +3,11 @@ package com.github.kettoleon.hive4j;
 import com.github.kettoleon.hive4j.agent.impl.SwarmAgentSystemPromptBuilder;
 import com.github.kettoleon.hive4j.agents.QueriesWebSocketHandler;
 import com.github.kettoleon.hive4j.agents.repo.Query;
-import com.github.kettoleon.hive4j.functions.experimental.QueryFunction;
 import com.github.kettoleon.hive4j.backend.Backend;
 import com.github.kettoleon.hive4j.backend.BackendFactory;
 import com.github.kettoleon.hive4j.backends.BackendConfiguration;
 import com.github.kettoleon.hive4j.backends.ConfiguredBackends;
+import com.github.kettoleon.hive4j.functions.experimental.QueryFunction;
 import com.github.kettoleon.hive4j.model.Model;
 import com.github.kettoleon.hive4j.queue.embedded.EmbeddedListenerThread;
 import com.github.kettoleon.hive4j.queue.embedded.EmbeddedQueue;
@@ -46,7 +46,7 @@ public class Hive4jApplication {
     @Bean
     public List<Backend> backends(ConfiguredBackends configuredBackends, Map<String, BackendFactory> backendFactories) {
         ArrayList<Backend> backends = new ArrayList<>();
-        if(configuredBackends != null && configuredBackends.getBackends() != null) {
+        if (configuredBackends != null && configuredBackends.getBackends() != null) {
             for (Map.Entry<String, BackendConfiguration> bc : configuredBackends.getBackends().entrySet()) {
                 BackendConfiguration backendConfig = bc.getValue();
                 BackendFactory backendFactory = backendFactories.get(backendConfig.getType() + BackendFactory.class.getSimpleName());
@@ -64,10 +64,10 @@ public class Hive4jApplication {
 
     private static void blockUntilBackendsReady(List<Backend> backends) {
         String version = null;
-        while(version == null){
-            try{
+        while (version == null) {
+            try {
                 version = backends.getFirst().getVersion();
-            }catch(Exception e){
+            } catch (Exception e) {
                 try {
                     Thread.sleep(200l);
                 } catch (InterruptedException ex) {

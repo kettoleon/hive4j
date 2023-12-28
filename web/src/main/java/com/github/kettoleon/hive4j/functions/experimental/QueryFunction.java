@@ -21,21 +21,38 @@ public class QueryFunction {
 
     @Autowired
     private PromptEnhancerFunction promptEnhancerFunction;
+    @Autowired
+    private ResearchFunction researchFunction;
+
+    @Autowired
+    private TaskRouterFunction taskRouterFunction;
 
     @Autowired
     private SwarmAgentSystemPromptBuilder swarmAgentSystemPromptBuilder;
 
     public Flux<GenerateProgress> execute(Query query) {
 
-        if(logicModel == null) {
+        if (logicModel == null) {
             return Flux.just(GenerateProgress.builder().errorMessage("Sorry, no logicModel bean available in the context.").build()).delayElements(Duration.ofMillis(1000));
         }
 
         String enhancedPrompt = promptEnhancerFunction.enhance(query.getQuery());
         query.setQuery(enhancedPrompt);
 
-        //TODO obviously this will do more things, but that is a start.
-        return logicModel.generate(toInstruction(query));
+        //TODO we need the context of the conversation and the agent first, just in case we say reasearch "this" or "go and research whatever you want"
+        //TODO so we need to have chat implemented first.
+        String route = taskRouterFunction.route(query.getQuery());
+        switch (route) {
+
+            case "research":
+                researchFunction.research(query.getQuery(), query.getAgent().asApiAgent());
+                return Flux.just(GenerateProgress.builder().errorMessage("I've searched a few things on the internet and learnt from it.").build()).delayElements(Duration.ofMillis(1000));
+            case "learn":
+                return Flux.just(GenerateProgress.builder().errorMessage("I'll learn from the resource and get back to you").build()).delayElements(Duration.ofMillis(1000));
+            default:
+                return logicModel.generate(toInstruction(query));
+        }
+
 
     }
 
