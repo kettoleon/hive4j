@@ -50,6 +50,9 @@
                         <a class="nav-link" href="/workspaces" th:classappend="${page.equals('workspaces/workspaces')}?active">Workspaces</a>
                     </li>
                     <li class="nav-item" th:if="${user != null}">
+                        <a class="nav-link" href="/chats" th:classappend="${page.equals('chats/chats')}?active">Chats</a>
+                    </li>
+                    <li class="nav-item" th:if="${user != null}">
                         <a class="nav-link" href="/agents" th:classappend="${page.equals('agents/agents')}?active">Agents</a>
                     </li>
                     <li class="nav-item" th:if="${user != null}">
@@ -107,11 +110,7 @@
     </nav>
 
     <div class="bg-body" style="padding-top:2em;padding-bottom:2em;">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <th:block th:insert="~{${page}}"></th:block>
-            </div>
-        </div>
+        <th:block th:insert="~{${page}}"></th:block>
     </div>
     <footer class="d-print-none bg-light text-center text-lg-start">
         <div class="text-center p-3 bg-body-tertiary rounded row">

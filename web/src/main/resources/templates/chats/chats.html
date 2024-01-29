@@ -1,0 +1,20 @@
+<div class="row justify-content-center">
+    <div class="col-lg-4">
+        <button class="btn btn-success" type="submit" id="button-new">
+            <i class="bi bi-window-plus"></i> New conversation
+        </button>
+        <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+                Current discussion
+            </button>
+            <button type="button" class="list-group-item list-group-item-action">Previous discussion</button>
+            <button type="button" class="list-group-item list-group-item-action">Older discussion</button>
+            <button type="button" class="list-group-item list-group-item-action">Another older discussion</button>
+            <button type="button" class="list-group-item list-group-item-action">A really old discussion</button>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <th:block th:if="${chat != null}" th:insert="~{chats/chat}"></th:block>
+        <th:block th:if="${chat == null}" th:insert="~{chats/new}"></th:block>
+    </div>
+</div>

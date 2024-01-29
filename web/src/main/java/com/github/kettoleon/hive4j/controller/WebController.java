@@ -38,4 +38,9 @@ public class WebController {
         return page("workspaces/workspaces", "Workspaces");
     }
 
+    @GetMapping(path = {"/chats"})
+    public ModelAndView chats() {
+        return page("chats/chats", "Chats");
+    }
+
 }
